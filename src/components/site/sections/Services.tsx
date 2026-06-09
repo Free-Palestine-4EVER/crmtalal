@@ -40,7 +40,7 @@ export function Services() {
                   </p>
 
                   <ul className="mt-5 space-y-2.5 border-t border-[#ece3d2] pt-5">
-                    {service.items.slice(0, 3).map((it, k) => (
+                    {service.items.map((it, k) => (
                       <li key={k} className="flex items-start gap-2.5 text-sm text-ink-600">
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-700" strokeWidth={2.2} />
                         <span className="text-pretty">{L(it)}</span>

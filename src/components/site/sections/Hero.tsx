@@ -1,13 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { BadgeCheck, Phone, ArrowDown } from "lucide-react";
-import { LogoMark } from "@/components/brand/Logo";
 import { TopoPattern } from "@/components/brand/TopoPattern";
 import { QuickRequest } from "@/components/site/QuickRequest";
 import { useI18n } from "@/i18n";
 import { STATS, CONTACT } from "@/content/site";
 import { EASE_LUXE } from "@/components/motion/variants";
+
+const Hero3D = dynamic(
+  () => import("@/components/site/Hero3D").then((m) => m.Hero3D),
+  { ssr: false },
+);
 
 function AccentedTitle({ title, accent }: { title: string; accent: string }) {
   const idx = accent ? title.indexOf(accent) : -1;
@@ -49,11 +54,12 @@ export function Hero() {
         }}
       />
       <TopoPattern className="text-maroon-600/40" opacity={0.05} />
-      <div className="pointer-events-none absolute -bottom-20 select-none opacity-[0.04] ltr:-left-10 rtl:-right-10">
-        <LogoMark tone="maroon" className="h-[32rem] w-auto" />
+      {/* Scroll-animated 3D centerpiece (decorative). */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Hero3D />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:pb-28 lg:pt-36">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:pb-28 lg:pt-36">
         {/* Left: message */}
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.span

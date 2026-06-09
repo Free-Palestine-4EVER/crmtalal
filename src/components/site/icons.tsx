@@ -9,6 +9,11 @@ import {
   Target,
   ShieldCheck,
   Lock,
+  Map as MapIcon,
+  Home,
+  Store,
+  Landmark,
+  Warehouse,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,6 +28,11 @@ export const ICONS: Record<string, LucideIcon> = {
   target: Target,
   shieldCheck: ShieldCheck,
   lock: Lock,
+  map: MapIcon,
+  home: Home,
+  store: Store,
+  landmark: Landmark,
+  warehouse: Warehouse,
 };
 
 export function getIcon(key: string): LucideIcon {
