@@ -11,7 +11,7 @@ export function Hero3D() {
   return (
     <ModelStage
       src={MODEL_URL}
-      fit={5.2}
+      fit={6.8}
       distance={5.6}
       spin={0.3}
       lift={0.2}
