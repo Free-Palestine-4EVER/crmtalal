@@ -88,6 +88,7 @@ export function mapProject(snap: Snap): Project {
     documents: d.documents ?? [],
     reports: d.reports ?? [],
     timeline: d.timeline ?? [],
+    valuation: d.valuation ?? undefined,
     createdAt: ms(d.createdAt),
     updatedAt: ms(d.updatedAt),
   };

@@ -25,6 +25,11 @@ import { StatusBadge, PriorityBadge } from "@/components/portal/StatusBadge";
 import { StageProgress } from "@/components/portal/request/StageProgress";
 import { RequestActions } from "@/components/portal/request/RequestActions";
 import { RequestMessages } from "@/components/portal/request/RequestMessages";
+import {
+  MediaGallery,
+  isImageDoc,
+} from "@/components/portal/request/MediaGallery";
+import { ValuationWorkspace } from "@/components/portal/request/ValuationWorkspace";
 import { FileUpload, type UploadedFile } from "@/components/portal/FileUpload";
 import { useProject } from "@/lib/hooks/data";
 import { useAuth } from "@/lib/auth/AuthProvider";
@@ -237,6 +242,10 @@ export default function RequestDetailPage() {
             </CardBody>
           </Card>
 
+          {(canStaff || p.valuation) && (
+            <ValuationWorkspace project={p} canEdit={canStaff} />
+          )}
+
           {/* Documents */}
           <Card>
             <CardHeader>
@@ -246,27 +255,34 @@ export default function RequestDetailPage() {
               {p.documents.length === 0 ? (
                 <p className="text-sm text-ink-500">{d.project.noDocuments}</p>
               ) : (
-                <ul className="space-y-2">
-                  {p.documents.map((doc) => (
-                    <li key={doc.id}>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-3 rounded-lg border border-ink-700 bg-ink-850/50 px-3 py-2.5 transition-colors hover:border-gold-500/30"
-                      >
-                        <Paperclip className="h-4 w-4 shrink-0 text-gold-400" />
-                        <span className="min-w-0 flex-1 truncate text-sm text-cream-50">
-                          {doc.name}
-                        </span>
-                        <span className="text-xs text-ink-500">
-                          {doc.uploadedByName}
-                        </span>
-                        <Download className="h-4 w-4 text-ink-500" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div className="space-y-4">
+                  <MediaGallery documents={p.documents} />
+                  {p.documents.some((doc) => !isImageDoc(doc)) && (
+                    <ul className="space-y-2">
+                      {p.documents
+                        .filter((doc) => !isImageDoc(doc))
+                        .map((doc) => (
+                          <li key={doc.id}>
+                            <a
+                              href={doc.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-3 rounded-lg border border-ink-700 bg-ink-850/50 px-3 py-2.5 transition-colors hover:border-gold-500/30"
+                            >
+                              <Paperclip className="h-4 w-4 shrink-0 text-gold-400" />
+                              <span className="min-w-0 flex-1 truncate text-sm text-cream-50">
+                                {doc.name}
+                              </span>
+                              <span className="text-xs text-ink-500">
+                                {doc.uploadedByName}
+                              </span>
+                              <Download className="h-4 w-4 text-ink-500" />
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
               )}
               {canUploadDoc && (
                 <div className="border-t border-ink-800 pt-3">

@@ -10,6 +10,7 @@ import {
   attachDocument,
   attachReport,
   sendMessage,
+  saveValuation,
   type Actor,
 } from "@/lib/server/projects";
 
@@ -46,6 +47,10 @@ export async function POST(
         return NextResponse.json(await attachReport(actor, id, body.report));
       case "message":
         return NextResponse.json(await sendMessage(actor, id, body.text));
+      case "valuation":
+        return NextResponse.json(
+          await saveValuation(actor, id, body.valuation),
+        );
       default:
         return jsonError("Unknown action", 400);
     }

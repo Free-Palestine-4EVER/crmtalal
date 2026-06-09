@@ -141,9 +141,54 @@ export interface Project {
   documents: ProjectDocument[];
   reports: ProjectReport[];
   timeline: TimelineEntry[];
+  valuation?: ValuationData;
   createdAt: number;
   updatedAt: number;
 }
+
+/* ---- Valuation workspace (the valuer's mini-app) ---- */
+export type InspectionStatus = "ok" | "fair" | "poor" | "na";
+
+export interface InspectionItem {
+  key: string;
+  status: InspectionStatus;
+  note?: string;
+}
+
+export interface ValuationComparable {
+  id: string;
+  address?: string;
+  area?: number; // m²
+  price?: number; // total SAR
+  adjustmentPct?: number; // +/- %
+  note?: string;
+}
+
+export interface ValuationData {
+  inspection?: InspectionItem[];
+  inspectionNotes?: string;
+  comparables?: ValuationComparable[];
+  marketValue?: number;
+  costValue?: number;
+  incomeValue?: number;
+  finalValue?: number;
+  reconciliation?: string;
+  inspectedAt?: number;
+  updatedAt?: number;
+}
+
+export const INSPECTION_CHECKLIST: { key: string; ar: string; en: string }[] = [
+  { key: "structure", ar: "الهيكل الإنشائي", en: "Structure" },
+  { key: "finishes", ar: "التشطيبات", en: "Finishes" },
+  { key: "electrical", ar: "الأعمال الكهربائية", en: "Electrical" },
+  { key: "plumbing", ar: "السباكة", en: "Plumbing" },
+  { key: "exterior", ar: "الواجهة الخارجية", en: "Exterior" },
+  { key: "location", ar: "الموقع والحي", en: "Location & area" },
+  { key: "access", ar: "سهولة الوصول", en: "Access" },
+  { key: "utilities", ar: "الخدمات والمرافق", en: "Utilities" },
+  { key: "parking", ar: "المواقف", en: "Parking" },
+  { key: "condition", ar: "الحالة العامة", en: "Overall condition" },
+];
 
 export interface Message {
   id: string;

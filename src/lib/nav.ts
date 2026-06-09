@@ -13,6 +13,7 @@ import {
   BarChart3,
   Activity,
   UserCog,
+  FileCheck,
 } from "lucide-react";
 import type { Role } from "./types";
 import type { Dictionary } from "@/i18n/dictionaries/en";
@@ -39,6 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
   { key: "tasks", href: "/tasks", icon: CheckSquare, roles: ["admin", "employee"], group: "crm", label: (d) => d.modules.tasks },
   { key: "calendar", href: "/calendar", icon: CalendarDays, roles: ["admin", "employee"], group: "crm", label: (d) => d.modules.calendar },
   { key: "invoices", href: "/invoices", icon: Receipt, roles: ["admin"], group: "crm", label: (d) => d.modules.invoices },
+  { key: "reports", href: "/reports", icon: FileCheck, roles: ["admin", "employee"], group: "insights", label: (d) => d.dash.reports },
   { key: "analytics", href: "/analytics", icon: BarChart3, roles: ["admin"], group: "insights", label: (d) => d.dash.analytics },
   { key: "activity", href: "/activity", icon: Activity, roles: ["admin"], group: "insights", label: (d) => d.modules.activity },
   { key: "clients", href: "/clients", icon: Users, roles: ["admin"], group: "manage", label: (d) => d.dash.clients },

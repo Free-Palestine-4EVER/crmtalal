@@ -14,6 +14,7 @@ import type {
   ProjectDocument,
   ProjectReport,
   ValuationMethod,
+  ValuationData,
   Priority,
   TimelineKind,
   ActivityEntity,
@@ -429,6 +430,33 @@ export async function attachReport(
   });
   await logActivity(actor, "report_uploaded", "project", id, p.code, `Report for ${p.code}`);
   return { ok: true, report: full };
+}
+
+export async function saveValuation(
+  actor: Actor,
+  id: string,
+  patch: Partial<ValuationData>,
+) {
+  const p = await getProject(id);
+  if (!canStaffEdit(actor, p)) throw new HttpError(403, "Not allowed");
+  const update: Record<string, unknown> = {
+    updatedAt: FieldValue.serverTimestamp(),
+    "valuation.updatedAt": Date.now(),
+  };
+  for (const [k, v] of Object.entries(patch)) {
+    if (v !== undefined) update[`valuation.${k}`] = v;
+  }
+  if (patch.finalValue !== undefined) update.estimatedValue = patch.finalValue;
+  await adminDb.collection(COL.projects).doc(id).update(update);
+  await logActivity(
+    actor,
+    "valuation_saved",
+    "project",
+    id,
+    p.code,
+    `Valuation updated · ${p.code}`,
+  );
+  return { ok: true };
 }
 
 export async function sendMessage(actor: Actor, id: string, text: string) {
