@@ -12,6 +12,7 @@ export function Pen3D() {
       fit={4.6}
       distance={5.4}
       spin={0.1}
+      spinAxis="x"
       scrollSpin={Math.PI * 2.4}
       shadow
       className="!absolute inset-0"

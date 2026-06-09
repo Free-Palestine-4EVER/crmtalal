@@ -31,8 +31,10 @@ type Props = {
   fit?: number;
   /** camera distance — smaller = bigger on screen */
   distance?: number;
-  /** baseline idle spin speed on Y */
+  /** baseline idle spin speed */
   spin?: number;
+  /** axis the model spins around (default "y") */
+  spinAxis?: "x" | "y";
   /** lift the model on screen (positive = higher) */
   lift?: number;
   /** how strongly scroll progress spins the model (radians across the section) */
@@ -73,6 +75,7 @@ function Model({
   src,
   fit = 4.4,
   spin = 0.16,
+  spinAxis = "y",
   lift = 0,
   scrollSpin = Math.PI * 1.6,
   rise = false,
@@ -82,6 +85,7 @@ function Model({
   src: string;
   fit?: number;
   spin?: number;
+  spinAxis?: "x" | "y";
   lift?: number;
   scrollSpin?: number;
   rise?: boolean;
@@ -131,8 +135,16 @@ function Model({
     const age = t - born.current;
     const e = rise ? 1 - Math.pow(1 - Math.min(1, age / 1.8), 3) : 1; // easeOutCubic
 
-    const targetY = t * spin + s * scrollSpin + mx * 0.55 + (1 - e) * 0.9;
-    const targetX = Math.sin(t * 0.5) * 0.08 - my * 0.4 + (s - 0.5) * 0.45;
+    let targetX: number;
+    let targetY: number;
+    if (spinAxis === "x") {
+      // continuous tumble around X; Y keeps only a gentle sway + cursor parallax
+      targetX = t * spin + s * scrollSpin - my * 0.4 + (1 - e) * 0.9;
+      targetY = Math.sin(t * 0.5) * 0.08 + mx * 0.55;
+    } else {
+      targetY = t * spin + s * scrollSpin + mx * 0.55 + (1 - e) * 0.9;
+      targetX = Math.sin(t * 0.5) * 0.08 - my * 0.4 + (s - 0.5) * 0.45;
+    }
     g.rotation.y += (targetY - g.rotation.y) * 0.06;
     g.rotation.x += (targetX - g.rotation.x) * 0.06;
     g.rotation.z = Math.sin(t * 0.35) * 0.05;
@@ -152,6 +164,7 @@ export function ModelStage({
   fit = 4.4,
   distance = 5.4,
   spin = 0.16,
+  spinAxis = "y",
   lift = 0,
   scrollSpin,
   rise = false,
@@ -240,6 +253,7 @@ export function ModelStage({
                 src={src}
                 fit={fit}
                 spin={spin}
+                spinAxis={spinAxis}
                 lift={lift}
                 scrollSpin={scrollSpin}
                 rise={rise}

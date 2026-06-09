@@ -13,7 +13,7 @@ export function Hero3D() {
       distance={4.6}
       spin={0.14}
       lift={0.55}
-      scrollSpin={Math.PI * 1.8}
+      scrollSpin={Math.PI * 0.5}
       rise
       className="!absolute inset-0"
     />

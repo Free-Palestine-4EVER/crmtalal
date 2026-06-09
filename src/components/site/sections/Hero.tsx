@@ -75,18 +75,17 @@ export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"],
   });
-  // layered scroll drift — copy lifts away, backdrop sinks
-  const copyY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -90]);
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reduce ? 1 : 0.25]);
-  const skyY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "14%"]);
+  // extended scroll stage — the tower DESCENDS into frame while the page scrolls
+  const towerY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-30%", "22%"]);
+  const copyY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -70]);
+  const copyOpacity = useTransform(scrollYProgress, [0.55, 1], [1, reduce ? 1 : 0.3]);
+  const skyY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "12%"]);
 
   return (
-    <section
-      ref={ref}
-      className="bg-grain relative isolate overflow-hidden bg-ink-950"
-    >
+    <section ref={ref} className="relative lg:h-[175svh]">
+      <div className="bg-grain relative isolate overflow-hidden bg-ink-950 lg:sticky lg:top-0 lg:h-svh">
       {/* ── ONE full-bleed cinematic backdrop ── */}
       <motion.div
         aria-hidden
@@ -129,10 +128,14 @@ export function Hero() {
 
         {/* ════ TOWER + TEXT OVER IT ════ */}
         <div className="relative order-1 lg:order-2 lg:min-h-[82svh]">
-          {/* the 3D tower fills this half, behind the words */}
-          <div className="absolute inset-x-0 -bottom-24 top-[-3rem] lg:-bottom-32" aria-hidden>
+          {/* the 3D tower fills this half, descending into frame on scroll */}
+          <motion.div
+            style={{ y: towerY }}
+            className="absolute inset-x-0 -bottom-24 top-[-3rem] will-change-transform lg:-bottom-32"
+            aria-hidden
+          >
             <Hero3D />
-          </div>
+          </motion.div>
 
           {/* rotating gold seal */}
           <motion.div
@@ -238,11 +241,12 @@ export function Hero() {
         </div>
       </div>
 
-      {/* bottom fade into the next section */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--s-bg2)] to-transparent"
-      />
+        {/* bottom fade into the next section */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--s-bg2)] to-transparent"
+        />
+      </div>
     </section>
   );
 }

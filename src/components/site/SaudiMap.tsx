@@ -18,23 +18,26 @@ type City = {
   x: number;
   y: number;
   hq?: boolean;
+  /** label placement relative to the pin */
+  side?: "start" | "end";
+  dy?: number;
 };
 
 const CITIES: City[] = [
-  { id: "riyadh", ar: "الرياض", en: "Riyadh", x: 55, y: 42, hq: true },
-  { id: "jeddah", ar: "جدة", en: "Jeddah", x: 23, y: 55 },
-  { id: "makkah", ar: "مكة المكرمة", en: "Makkah", x: 26.5, y: 57.5 },
-  { id: "madinah", ar: "المدينة المنورة", en: "Madinah", x: 24, y: 40 },
-  { id: "dammam", ar: "الدمام", en: "Dammam", x: 71, y: 32 },
-  { id: "khobar", ar: "الخبر", en: "Khobar", x: 73.5, y: 34.5 },
-  { id: "buraidah", ar: "بريدة", en: "Buraidah", x: 43, y: 32 },
-  { id: "hail", ar: "حائل", en: "Hail", x: 35, y: 26 },
-  { id: "tabuk", ar: "تبوك", en: "Tabuk", x: 16, y: 18 },
-  { id: "abha", ar: "أبها", en: "Abha", x: 36, y: 73 },
-  { id: "jazan", ar: "جازان", en: "Jazan", x: 33, y: 81 },
-  { id: "najran", ar: "نجران", en: "Najran", x: 48, y: 76 },
-  { id: "alula", ar: "العلا", en: "AlUla", x: 22, y: 29 },
-  { id: "taif", ar: "الطائف", en: "Taif", x: 30, y: 59 },
+  { id: "riyadh", ar: "الرياض", en: "Riyadh", x: 55, y: 42, hq: true, side: "end" },
+  { id: "jeddah", ar: "جدة", en: "Jeddah", x: 23, y: 55, side: "start" },
+  { id: "makkah", ar: "مكة", en: "Makkah", x: 26.5, y: 57.5, side: "end", dy: 2.2 },
+  { id: "madinah", ar: "المدينة", en: "Madinah", x: 24, y: 40, side: "start" },
+  { id: "dammam", ar: "الدمام", en: "Dammam", x: 71, y: 32, side: "end", dy: -1.2 },
+  { id: "khobar", ar: "الخبر", en: "Khobar", x: 73.5, y: 34.5, side: "end", dy: 2 },
+  { id: "buraidah", ar: "بريدة", en: "Buraidah", x: 43, y: 32, side: "start", dy: -1.4 },
+  { id: "hail", ar: "حائل", en: "Hail", x: 35, y: 26, side: "start" },
+  { id: "tabuk", ar: "تبوك", en: "Tabuk", x: 16, y: 18, side: "end" },
+  { id: "abha", ar: "أبها", en: "Abha", x: 36, y: 73, side: "start" },
+  { id: "jazan", ar: "جازان", en: "Jazan", x: 33, y: 81, side: "start" },
+  { id: "najran", ar: "نجران", en: "Najran", x: 48, y: 76, side: "end" },
+  { id: "alula", ar: "العلا", en: "AlUla", x: 22, y: 29, side: "start" },
+  { id: "taif", ar: "الطائف", en: "Taif", x: 30, y: 59, side: "start", dy: 2.2 },
 ];
 
 /** Original simplified silhouette of the Kingdom (not survey-accurate). */
@@ -121,6 +124,23 @@ export function SaudiMap() {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ delay: reduce ? 0 : 1 + i * 0.07, type: "spring", stiffness: 320, damping: 18 }}
               />
+              {/* city name label */}
+              <motion.text
+                x={c.side === "end" ? 2 : -2}
+                y={(c.dy ?? 0) + 0.8}
+                textAnchor={c.side === "end" ? "start" : "end"}
+                fontSize={2.3}
+                fontWeight={c.hq ? 700 : 500}
+                fill={c.hq || isActive ? "var(--s-gold)" : "var(--s-fg)"}
+                fillOpacity={c.hq || isActive ? 1 : 0.62}
+                style={{ fontFamily: "var(--font-arabic)" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ delay: reduce ? 0 : 1.2 + i * 0.07, duration: 0.5 }}
+              >
+                {ar ? c.ar : c.en}
+              </motion.text>
             </g>
           );
         })}

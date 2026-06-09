@@ -1,4 +1,5 @@
 import { SiteShell } from "@/components/site/SiteShell";
+import { ChapterOrnament } from "@/components/site/ChapterOrnament";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Hero } from "@/components/site/sections/Hero";
@@ -22,10 +23,12 @@ export default function Home() {
         <PartnersMarquee />
         <Services />
 
-        {/* skyline artwork — calligraphy + tagline are baked into the image */}
+        {/* chapter film — generated motion piece, aggressive parallax */}
         <ParallaxShowcase
           bare
           image="/images/parallax-1.jpg"
+          video="/videos/chapter-1.mp4"
+          poster="/images/parallax-1.jpg"
           fallback="linear-gradient(135deg, #14161d 0%, #3a0a19 55%, #72142f 100%)"
           eyebrow={{ ar: "مرجعية موثوقة", en: "A trusted benchmark" }}
           title={{
@@ -39,6 +42,8 @@ export default function Home() {
 
         <ParallaxShowcase
           image="/images/parallax-2.jpg"
+          video="/videos/chapter-2.mp4"
+          poster="/images/parallax-2.jpg"
           fallback="linear-gradient(135deg, #2a0712 0%, #5e1228 50%, #14161d 100%)"
           index="02"
           eyebrow={{ ar: "الدقة في كل تفصيل", en: "Precision in every detail" }}
@@ -59,6 +64,7 @@ export default function Home() {
           image="/images/parallax-3.jpg"
           fallback="linear-gradient(135deg, #0a0b0e 0%, #364655 55%, #72142f 100%)"
           index="03"
+          ornament={<ChapterOrnament />}
           eyebrow={{ ar: "حضور يتجاوز الحدود", en: "Reach beyond borders" }}
           title={{
             ar: "ثقة تعبر الحدود",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   motion,
   useScroll,
@@ -12,34 +12,43 @@ import { useI18n } from "@/i18n";
 import type { LocalizedText } from "@/i18n/config";
 
 type Props = {
+  /** photo fallback / poster */
   image: string;
+  /** when set, a looping muted video replaces the photo */
+  video?: string;
+  poster?: string;
   eyebrow: LocalizedText;
   title: LocalizedText;
   sub?: LocalizedText;
-  /** fallback gradient shown until the photo is dropped in */
+  /** fallback gradient shown until media is available */
   fallback?: string;
   /** chapter index shown as mono numeral, e.g. "02" */
   index?: string;
   align?: "center" | "start";
   /** image-only mode — for artwork with text already baked in */
   bare?: boolean;
+  /** floating 3D ornament rendered beside the title (e.g. the ribbon mark) */
+  ornament?: ReactNode;
 };
 
 const DEFAULT_FALLBACK =
   "linear-gradient(135deg, #2a0712 0%, #72142f 45%, #14161d 100%)";
 
 /**
- * Full-bleed photographic chapter divider. The image drifts slower than the
- * page (depth), the text is bottom-anchored like a film title card.
+ * Full-bleed cinematic chapter divider. The media layer travels hard against
+ * the scroll (aggressive depth), text bottom-anchored like a film title card.
  */
 export function ParallaxShowcase({
   image,
+  video,
+  poster,
   eyebrow,
   title,
   sub,
   fallback = DEFAULT_FALLBACK,
   index,
   bare = false,
+  ornament,
 }: Props) {
   const { L } = useI18n();
   const reduce = useReducedMotion();
@@ -49,10 +58,10 @@ export function ParallaxShowcase({
     target: ref,
     offset: ["start end", "end start"],
   });
-  // buttery: spring-smoothed progress, deep travel, fixed overscan (no wobble)
+  // aggressive, spring-smoothed travel
   const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.4 });
-  const y = useTransform(smooth, [0, 1], reduce ? ["0%", "0%"] : ["-18%", "18%"]);
-  const textY = useTransform(smooth, [0.4, 1], reduce ? ["0%", "0%"] : ["0%", "55%"]);
+  const y = useTransform(smooth, [0, 1], reduce ? ["0%", "0%"] : ["-26%", "26%"]);
+  const textY = useTransform(smooth, [0.4, 1], reduce ? ["0%", "0%"] : ["0%", "60%"]);
 
   return (
     <section
@@ -60,12 +69,25 @@ export function ParallaxShowcase({
       className="relative isolate flex min-h-[92svh] items-end overflow-hidden"
       style={{ background: fallback }}
     >
-      {/* parallax photo layer */}
+      {/* parallax media layer */}
       <motion.div
         aria-hidden
-        style={{ y, backgroundImage: `url("${image}")` }}
-        className="pointer-events-none absolute inset-[-18%] scale-105 bg-cover bg-center will-change-transform"
-      />
+        style={{ y, ...(video ? {} : { backgroundImage: `url("${image}")` }) }}
+        className="pointer-events-none absolute inset-[-26%] scale-105 bg-cover bg-center will-change-transform"
+      >
+        {video && (
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src={video}
+            poster={poster ?? image}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        )}
+      </motion.div>
       {/* film grade */}
       <div
         aria-hidden
@@ -77,6 +99,16 @@ export function ParallaxShowcase({
         }}
       />
       <div className="grain pointer-events-none absolute inset-0" />
+
+      {/* floating 3D ornament — spins with scroll via its own stage */}
+      {ornament && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute end-[4%] top-1/2 z-10 hidden h-72 w-72 -translate-y-1/2 lg:block xl:h-96 xl:w-96"
+        >
+          {ornament}
+        </div>
+      )}
 
       {!bare && (
         <motion.div
