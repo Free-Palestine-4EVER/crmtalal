@@ -1,0 +1,93 @@
+rules_version = '2';
+
+// Edarah — Firestore security rules
+// Reads: client SDK (realtime, role-gated). Writes: server API routes only
+// (Firebase Admin SDK bypasses these rules), except limited self-service below.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function userData(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data;
+    }
+    function myRole() {
+      return userData(request.auth.uid).role;
+    }
+    function isAdmin() {
+      return signedIn() && myRole() == 'admin';
+    }
+    function isEmployee() {
+      return signedIn() && myRole() == 'employee';
+    }
+    function isStaff() {
+      return isAdmin() || isEmployee();
+    }
+
+    // ---- Users ----
+    match /users/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin() || isEmployee());
+      allow list: if isAdmin();
+      // Profiles are created by server (signup/admin). Users may edit only
+      // their own profile fields — never role / active / uid.
+      allow create: if false;
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.active == resource.data.active;
+      allow delete: if false;
+    }
+
+    // ---- Projects (valuation requests) ----
+    match /projects/{projectId} {
+      allow get, list: if isAdmin()
+        || (signedIn() && resource.data.clientId == request.auth.uid)
+        || (signedIn() && resource.data.assignedTo == request.auth.uid);
+
+      // All project writes happen via server API routes (admin SDK).
+      allow write: if false;
+
+      // ---- Messages (per project) ----
+      match /messages/{messageId} {
+        function project() {
+          return get(/databases/$(database)/documents/projects/$(projectId)).data;
+        }
+        allow read: if isAdmin()
+          || (signedIn() && project().clientId == request.auth.uid)
+          || (signedIn() && project().assignedTo == request.auth.uid);
+        allow write: if false; // sent via server API route
+      }
+    }
+
+    // ---- Notifications ----
+    match /notifications/{id} {
+      allow get, list: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if false; // server only
+      // Owner may only flip the `read` flag.
+      allow update: if signedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ---- CRM collections (staff read; server-only writes) ----
+    match /leads/{id} { allow read: if isStaff(); allow write: if false; }
+    match /contacts/{id} { allow read: if isStaff(); allow write: if false; }
+    match /companies/{id} { allow read: if isStaff(); allow write: if false; }
+    match /deals/{id} { allow read: if isStaff(); allow write: if false; }
+    match /tasks/{id} { allow read: if isStaff(); allow write: if false; }
+    match /activities/{id} { allow read: if isStaff(); allow write: if false; }
+    match /events/{id} { allow read: if isStaff(); allow write: if false; }
+    match /invoices/{id} {
+      allow read: if isStaff()
+        || (signedIn() && resource.data.clientId == request.auth.uid);
+      allow write: if false;
+    }
+
+    // ---- Counters (sequence for codes) ----
+    match /counters/{id} {
+      allow read, write: if false; // server only
+    }
+  }
+}

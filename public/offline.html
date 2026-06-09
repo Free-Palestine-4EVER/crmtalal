@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Edarah — غير متصل</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 24px;
+        font-family: system-ui, -apple-system, "Segoe UI", Tajawal, sans-serif;
+        background:
+          radial-gradient(80% 100% at 100% 0%, rgba(114, 20, 47, 0.55), transparent 60%),
+          #0a0b0e;
+        color: #f1e8d8;
+      }
+      .card { max-width: 28rem; }
+      img { width: 92px; height: 92px; border-radius: 22px; margin: 0 auto 24px; display: block; box-shadow: 0 18px 50px -18px rgba(201, 162, 76, 0.4); }
+      h1 { font-size: 1.5rem; font-weight: 700; color: #f9f4ec; }
+      p { margin-top: 12px; color: #cbb9a0; line-height: 1.9; font-size: 0.95rem; }
+      .en { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); direction: ltr; }
+      button {
+        margin-top: 28px; border: 0; cursor: pointer;
+        background: linear-gradient(#d9bc79, #b68a38); color: #0a0b0e;
+        font-weight: 600; font-size: 0.95rem; padding: 12px 28px; border-radius: 999px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img src="/icons/icon-192.png" alt="Edarah" />
+      <h1>أنت غير متصل بالإنترنت</h1>
+      <p>بعض الميزات تتطلب اتصالاً بالشبكة. سنعيد الاتصال تلقائيًا بمجرد عودة الإنترنت.</p>
+      <div class="en">
+        <h1>You're offline</h1>
+        <p>Some features need a connection. We'll reconnect automatically.</p>
+      </div>
+      <button onclick="location.reload()">إعادة المحاولة · Retry</button>
+    </div>
+  </body>
+</html>
