@@ -35,13 +35,13 @@ export function SiteNav() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-maroon-700/40 bg-ink-950/85 backdrop-blur-xl"
+          ? "border-b border-[#ece3d2] bg-white/90 shadow-[0_10px_40px_-28px_rgba(114,20,47,0.25)] backdrop-blur-xl"
           : "border-b border-transparent bg-transparent",
       )}
     >
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
         <Link href="/" aria-label="Edarah" className="shrink-0">
-          <Logo priority />
+          <Logo tone="maroon" textTone="dark" priority />
         </Link>
 
         <div className="hidden items-center gap-7 lg:flex">
@@ -49,7 +49,7 @@ export function SiteNav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-cream-100/75 transition-colors hover:text-gold-300"
+              className="text-sm font-medium text-ink-700 transition-colors hover:text-maroon-600"
             >
               {L(l.label)}
             </a>
@@ -57,15 +57,19 @@ export function SiteNav() {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <LanguageToggle />
+          <LanguageToggle className="border-[#ece3d2] bg-white/70 text-ink-700 hover:border-gold-600 hover:text-maroon-600" />
           <Link
             href="/login"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-cream-100/80 transition-colors hover:text-white"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-700 transition-colors hover:text-maroon-600"
           >
             <LogIn className="h-4 w-4" />
             {dict.nav.login}
           </Link>
-          <Button href="/register" size="sm">
+          <Button
+            href="/register"
+            size="sm"
+            className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(114,20,47,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
+          >
             {dict.nav.requestValuation}
           </Button>
         </div>
@@ -73,7 +77,7 @@ export function SiteNav() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="grid h-11 w-11 place-items-center rounded-xl border border-maroon-700/40 text-cream-50 lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-xl border border-[#ece3d2] text-ink-700 lg:hidden"
           aria-label={dict.nav.menu}
         >
           <Menu className="h-5 w-5" />
@@ -86,14 +90,14 @@ export function SiteNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-brand lg:hidden"
+            className="fixed inset-0 z-50 bg-white lg:hidden"
           >
             <div className="flex h-18 items-center justify-between px-5">
-              <Logo />
+              <Logo tone="maroon" textTone="dark" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="grid h-11 w-11 place-items-center rounded-xl border border-maroon-700/50 text-cream-50"
+                className="grid h-11 w-11 place-items-center rounded-xl border border-[#ece3d2] text-ink-700"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -108,20 +112,29 @@ export function SiteNav() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 + i * 0.05 }}
-                  className="border-b border-maroon-800/40 py-4 text-lg font-medium text-cream-50"
+                  className="border-b border-[#ece3d2] py-4 text-lg font-medium text-ink-900"
                 >
                   {L(l.label)}
                 </motion.a>
               ))}
               <div className="mt-6 flex flex-col gap-3">
-                <Button href="/register" size="lg">
+                <Button
+                  href="/register"
+                  size="lg"
+                  className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(114,20,47,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
+                >
                   {dict.nav.requestValuation}
                 </Button>
-                <Button href="/login" variant="outline" size="lg">
+                <Button
+                  href="/login"
+                  variant="outline"
+                  size="lg"
+                  className="border-[#ece3d2] text-ink-700 hover:border-gold-600 hover:bg-gold-500/10 hover:text-maroon-600"
+                >
                   {dict.nav.login}
                 </Button>
                 <div className="mt-2 flex justify-center">
-                  <LanguageToggle />
+                  <LanguageToggle className="border-[#ece3d2] bg-white/70 text-ink-700 hover:border-gold-600 hover:text-maroon-600" />
                 </div>
               </div>
             </div>

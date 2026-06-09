@@ -13,9 +13,9 @@ export function Reach() {
   return (
     <section
       id="reach"
-      className="relative scroll-mt-24 overflow-hidden border-y border-ink-700/40 bg-ink-950/40 py-24 sm:py-28"
+      className="relative scroll-mt-24 overflow-hidden border-y border-[#ece3d2] bg-[#fbf8f2] py-24 sm:py-28"
     >
-      <TopoPattern className="text-gold-500" opacity={0.1} />
+      <TopoPattern className="text-maroon-600/40" opacity={0.05} />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow={dict.sections.reachEyebrow}
@@ -25,12 +25,11 @@ export function Reach() {
         <div className="mx-auto mt-14 max-w-4xl">
           {/* domestic — prominent */}
           <Reveal>
-            <div className="bg-brand relative overflow-hidden rounded-2xl border border-gold-500/25 p-8 text-center sm:p-10">
-              <div className="glow-gold pointer-events-none absolute inset-x-0 top-0 h-32" />
-              <span className="relative grid mx-auto h-12 w-12 place-items-center rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-400">
+            <div className="relative overflow-hidden rounded-2xl border border-maroon-600/15 bg-maroon-600/[0.08] p-8 text-center shadow-[0_10px_40px_-24px_rgba(114,20,47,0.3)] sm:p-10">
+              <span className="relative grid mx-auto h-12 w-12 place-items-center rounded-full bg-maroon-600/10 text-maroon-600">
                 <MapPin className="h-6 w-6" strokeWidth={1.6} />
               </span>
-              <p className="relative mt-5 font-display text-2xl font-semibold leading-snug text-cream-50 sm:text-3xl">
+              <p className="relative mt-5 font-display text-2xl font-semibold leading-snug text-ink-900 sm:text-3xl">
                 {L(REACH.domestic)}
               </p>
             </div>
@@ -38,7 +37,7 @@ export function Reach() {
 
           {/* international */}
           <Reveal delay={0.1}>
-            <div className="mt-9 flex items-center justify-center gap-3 text-gold-300">
+            <div className="mt-9 flex items-center justify-center gap-3 text-gold-700">
               <Globe2 className="h-4 w-4" />
               <span className="text-xs font-semibold uppercase tracking-[0.22em]">
                 {locale === "ar" ? "وحضور دولي" : "& international presence"}
@@ -48,7 +47,7 @@ export function Reach() {
               {REACH.international.map((c, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-2 rounded-full border border-gold-500/35 bg-gold-500/[0.06] px-5 py-2.5 text-sm font-medium text-cream-100/80 transition-colors hover:border-gold-500/60 hover:text-gold-200"
+                  className="inline-flex items-center gap-2 rounded-full border border-gold-600/30 bg-white px-5 py-2.5 text-sm font-medium text-ink-600 shadow-[0_8px_30px_-22px_rgba(114,20,47,0.25)] transition-colors hover:border-gold-600 hover:text-maroon-600"
                 >
                   {L(c)}
                 </span>

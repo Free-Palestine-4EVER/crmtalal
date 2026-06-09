@@ -49,7 +49,7 @@ export function ContactStrip() {
   ];
 
   return (
-    <section id="contact" className="relative scroll-mt-24 py-24 sm:py-28">
+    <section id="contact" className="relative scroll-mt-24 bg-[#fbf8f2] py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow={dict.sections.contactEyebrow}
@@ -60,17 +60,17 @@ export function ContactStrip() {
           {items.map((it, i) => {
             const Icon = it.icon;
             const inner = (
-              <div className="group flex h-full items-start gap-4 rounded-2xl border border-ink-700/70 bg-ink-850/50 p-6 transition-colors hover:border-gold-500/40 hover:bg-ink-800/60">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-gold-500/30 bg-gold-500/10 text-gold-400">
+              <div className="group flex h-full items-start gap-4 rounded-2xl border border-[#ece3d2] bg-white p-6 shadow-[0_10px_40px_-24px_rgba(114,20,47,0.25)] transition-colors hover:border-gold-600/40">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold-500/12 text-gold-700">
                   <Icon className="h-5 w-5" strokeWidth={1.7} />
                 </span>
                 <span className="flex min-w-0 flex-col gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-cream-100/45">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">
                     {it.label}
                   </span>
                   <span
                     dir={it.dir}
-                    className="truncate text-sm font-medium text-cream-50 transition-colors group-hover:text-gold-200"
+                    className="truncate text-sm font-medium text-ink-900 transition-colors group-hover:text-maroon-600"
                   >
                     {it.value}
                   </span>
