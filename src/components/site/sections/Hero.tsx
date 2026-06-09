@@ -6,6 +6,7 @@ import {
   motion,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "framer-motion";
 import { Phone, ArrowDown } from "lucide-react";
@@ -78,10 +79,18 @@ export function Hero() {
     offset: ["start start", "end end"],
   });
   // extended scroll stage — the tower DESCENDS into frame while the page scrolls
-  const towerY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-30%", "22%"]);
-  const copyY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -70]);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 22,
+    mass: 0.8,
+  });
+  // true parallax: each layer travels at its own speed.
+  // The tower starts HALF revealed (pushed down) and rises fully into frame.
+  const towerY = useTransform(smoothProgress, [0, 1], reduce ? ["0%", "0%"] : ["30%", "-8%"]);
+  const copyY = useTransform(smoothProgress, [0, 1], reduce ? [0, 0] : [0, -110]);
   const copyOpacity = useTransform(scrollYProgress, [0.55, 1], [1, reduce ? 1 : 0.3]);
-  const skyY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "12%"]);
+  const skyY = useTransform(smoothProgress, [0, 1], reduce ? ["0%", "0%"] : ["-6%", "18%"]);
+  const formY = useTransform(smoothProgress, [0, 1], reduce ? [0, 0] : [0, -45]);
 
   return (
     <section ref={ref} className="relative lg:h-[175svh]">
@@ -121,6 +130,7 @@ export function Hero() {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease: EASE_LUXE, delay: 0.45 }}
+          style={{ y: formY }}
           className="order-2 flex scroll-mt-24 justify-center lg:order-1 lg:justify-start"
         >
           <QuickRequest />
