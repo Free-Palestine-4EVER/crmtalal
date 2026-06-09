@@ -64,6 +64,7 @@ export default function Home() {
           image="/images/parallax-3.jpg"
           fallback="linear-gradient(135deg, #0a0b0e 0%, #364655 55%, #72142f 100%)"
           index="03"
+          slide
           ornament={<ChapterOrnament />}
           eyebrow={{ ar: "حضور يتجاوز الحدود", en: "Reach beyond borders" }}
           title={{
