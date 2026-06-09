@@ -7,7 +7,13 @@ import * as THREE from "three";
 
 const MODEL_URL = "/models/hero-ribbon-opt.glb";
 
-function Ribbon({ scroll }: { scroll: React.RefObject<number> }) {
+function Ribbon({
+  scroll,
+  mouse,
+}: {
+  scroll: React.RefObject<number>;
+  mouse: React.RefObject<{ x: number; y: number }>;
+}) {
   const { scene } = useGLTF(MODEL_URL);
   const group = useRef<THREE.Group>(null);
 
@@ -39,13 +45,16 @@ function Ribbon({ scroll }: { scroll: React.RefObject<number> }) {
     if (!g) return;
     const t = state.clock.elapsedTime;
     const s = scroll.current ?? 0;
-    // idle float + rotation, plus scroll-driven spin & drift
-    g.rotation.y = t * 0.18 + s * Math.PI * 2.2;
-    g.rotation.x = Math.sin(t * 0.5) * 0.06 + s * 0.5;
+    const mx = mouse.current?.x ?? 0;
+    const my = mouse.current?.y ?? 0;
+    // idle spin + scroll-driven motion, eased toward a cursor-parallax target
+    const targetY = t * 0.18 + s * Math.PI * 2.2 + mx * 0.5;
+    const targetX = Math.sin(t * 0.5) * 0.06 + s * 0.5 - my * 0.35;
+    g.rotation.y += (targetY - g.rotation.y) * 0.07;
+    g.rotation.x += (targetX - g.rotation.x) * 0.07;
     g.rotation.z = Math.sin(t * 0.35) * 0.04;
     g.position.y = Math.sin(t * 0.6) * 0.12 - s * 1.6;
-    const sc = 1 - s * 0.18;
-    g.scale.setScalar(sc);
+    g.scale.setScalar(1 - s * 0.18);
   });
 
   return (
@@ -57,15 +66,26 @@ function Ribbon({ scroll }: { scroll: React.RefObject<number> }) {
 
 export function Hero3D() {
   const scroll = useRef(0);
+  const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const onScroll = () => {
       const h = window.innerHeight || 800;
       scroll.current = Math.min(1, Math.max(0, window.scrollY / (h * 0.85)));
     };
+    const onMove = (e: PointerEvent) => {
+      mouse.current = {
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: (e.clientY / window.innerHeight) * 2 - 1,
+      };
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("pointermove", onMove);
+    };
   }, []);
 
   return (
@@ -80,7 +100,7 @@ export function Hero3D() {
       <directionalLight position={[-6, 2, -4]} intensity={0.7} color="#c9a24c" />
       <pointLight position={[0, -3, 4]} intensity={0.6} color="#72142f" />
       <Suspense fallback={null}>
-        <Ribbon scroll={scroll} />
+        <Ribbon scroll={scroll} mouse={mouse} />
       </Suspense>
     </Canvas>
   );

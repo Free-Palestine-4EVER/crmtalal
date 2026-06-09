@@ -15,7 +15,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative scroll-mt-24 bg-white py-24 sm:py-28">
+    <section id="faq" className="relative scroll-mt-24 bg-surface py-24 sm:py-28">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
         <SectionHeading
           eyebrow={locale === "ar" ? "الأسئلة الشائعة" : "FAQs"}
@@ -29,25 +29,34 @@ export function Faq() {
               <Reveal key={i} delay={Math.min(i, 4) * 0.05}>
                 <div
                   className={cn(
-                    "overflow-hidden rounded-2xl border bg-white shadow-[0_10px_40px_-24px_rgba(114,20,47,0.25)] transition-colors",
-                    isOpen ? "border-gold-600/40" : "border-[#ece3d2]",
+                    "overflow-hidden rounded-2xl border bg-scard shadow-[0_14px_44px_-30px_rgba(114,20,47,0.32)] transition-all duration-300",
+                    isOpen
+                      ? "border-[var(--s-gold)]/45 shadow-[0_18px_50px_-28px_var(--s-glow)]"
+                      : "border-line hover:border-[var(--s-gold)]/30",
                   )}
                 >
                   <button
                     type="button"
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-5 text-start"
+                    className="flex w-full items-center justify-between gap-4 px-6 py-5 text-start"
                   >
-                    <span className="text-base font-semibold text-ink-900">{L(faq.q)}</span>
+                    <span
+                      className={cn(
+                        "text-base font-semibold transition-colors",
+                        isOpen ? "text-accent" : "text-fg",
+                      )}
+                    >
+                      {L(faq.q)}
+                    </span>
                     <motion.span
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.3, ease: EASE_LUXE }}
                       className={cn(
                         "grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-colors",
                         isOpen
-                          ? "border-gold-600/50 bg-gold-500/12 text-gold-700"
-                          : "border-[#ece3d2] text-ink-500",
+                          ? "border-[var(--s-gold)]/55 bg-[var(--s-gold)]/12 text-sgold"
+                          : "border-line text-muted",
                       )}
                     >
                       <Plus className="h-4 w-4" />
@@ -64,9 +73,12 @@ export function Faq() {
                         transition={{ duration: 0.34, ease: EASE_LUXE }}
                         className="overflow-hidden"
                       >
-                        <p className="px-5 pb-5 text-pretty text-sm leading-relaxed text-ink-600">
-                          {L(faq.a)}
-                        </p>
+                        <div className="px-6 pb-5">
+                          <span className="mb-4 block h-px w-full bg-gradient-to-r from-[var(--s-gold)]/30 via-line to-transparent" />
+                          <p className="text-pretty text-sm leading-relaxed text-soft">
+                            {L(faq.a)}
+                          </p>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
