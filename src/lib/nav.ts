@@ -2,6 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
   FileText,
+  MessageSquare,
   UserPlus,
   Users,
   Building2,
@@ -30,6 +31,7 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
   { key: "dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["client", "employee", "admin"], group: "main", label: (d) => d.dash.overview },
   { key: "requests", href: "/requests", icon: FileText, roles: ["client", "employee", "admin"], group: "main", label: (d, r) => (r === "client" ? d.dash.myRequests : r === "employee" ? d.dash.assigned : d.dash.requests) },
+  { key: "inbox", href: "/inbox", icon: MessageSquare, roles: ["client", "employee", "admin"], group: "main", label: (d) => d.dash.messages },
   { key: "leads", href: "/leads", icon: UserPlus, roles: ["admin", "employee"], group: "crm", label: (d) => d.modules.leads },
   { key: "contacts", href: "/contacts", icon: Users, roles: ["admin", "employee"], group: "crm", label: (d) => d.modules.contacts },
   { key: "companies", href: "/companies", icon: Building2, roles: ["admin", "employee"], group: "crm", label: (d) => d.modules.companies },

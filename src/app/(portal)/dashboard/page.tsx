@@ -25,6 +25,7 @@ import { Card, CardHeader, CardTitle, CardBody } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { RequestRow } from "@/components/portal/RequestRow";
+import { ClientDashboard } from "@/components/portal/ClientDashboard";
 import { useI18n } from "@/i18n";
 import { isActive, TERMINAL_STATUSES } from "@/lib/types";
 import type { Dictionary as Dict } from "@/i18n/dictionaries/en";
@@ -81,6 +82,11 @@ export default function DashboardPage() {
     : isClient
       ? d.dash.welcomeBack
       : d.dash.welcomeBackEmployee;
+
+  // Clients get a dedicated, richer home.
+  if (isClient) {
+    return <ClientDashboard projects={projects} loading={loading} />;
+  }
 
   return (
     <div>
