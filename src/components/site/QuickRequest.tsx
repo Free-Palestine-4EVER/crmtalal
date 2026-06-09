@@ -29,7 +29,7 @@ const SUGGESTIONS: { ar: string; en: string }[] = [
 ];
 
 const inputClass =
-  "w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 h-12 text-cream-50 placeholder:text-cream-100/40 outline-none backdrop-blur-sm transition-colors focus:border-gold-400/70 focus:bg-white/[0.12] focus:ring-2 focus:ring-gold-400/20";
+  "w-full rounded-xl border border-white/15 bg-white/[0.05] px-4 h-12 text-cream-50 placeholder:text-cream-100/40 outline-none transition-colors focus:border-gold-400/70 focus:bg-white/[0.1] focus:ring-2 focus:ring-gold-400/20";
 
 export function QuickRequest() {
   const { dict: d, locale, L } = useI18n();
@@ -142,7 +142,7 @@ export function QuickRequest() {
   };
 
   return (
-    <div className="w-full max-w-md rounded-3xl border border-white/15 bg-white/[0.08] p-6 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.75)] ring-1 ring-white/10 backdrop-blur-2xl sm:p-7">
+    <div className="w-full max-w-md rounded-3xl border border-white/20 bg-white/[0.04] p-6 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.75),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-3xl backdrop-saturate-150 sm:p-7">
       <AnimatePresence mode="wait">
         {step === "form" ? (
           <motion.form

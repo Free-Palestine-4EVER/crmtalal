@@ -36,26 +36,21 @@ function Pill({ partner }: { partner: LocalizedText }) {
   const [broken, setBroken] = useState(false);
   const label = L(partner);
 
-  if (logo && !broken) {
-    return (
-      <span
-        className="grid h-14 min-w-36 place-items-center whitespace-nowrap rounded-xl border border-line bg-scard px-6"
-        title={label}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={logo}
-          alt={label}
-          onError={() => setBroken(true)}
-          className="max-h-8 w-auto max-w-32 object-contain opacity-75 brightness-0 invert transition-opacity hover:opacity-100"
-          loading="lazy"
-        />
-      </span>
-    );
-  }
+  // logo-only wall — anything without a clean logo doesn't render
+  if (!logo || broken) return null;
   return (
-    <span className="grid h-14 place-items-center whitespace-nowrap rounded-xl border border-line bg-scard px-6 font-mono text-sm font-medium text-soft">
-      {label}
+    <span
+      className="grid h-14 min-w-36 place-items-center whitespace-nowrap rounded-xl border border-line bg-scard px-6"
+      title={label}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={logo}
+        alt={label}
+        onError={() => setBroken(true)}
+        className="max-h-8 w-auto max-w-32 object-contain opacity-75 brightness-0 invert transition-opacity hover:opacity-100"
+        loading="lazy"
+      />
     </span>
   );
 }
@@ -63,7 +58,8 @@ function Pill({ partner }: { partner: LocalizedText }) {
 export function PartnersMarquee() {
   const { locale } = useI18n();
   const ar = locale === "ar";
-  const row = [...PARTNERS, ...PARTNERS];
+  const withLogos = PARTNERS.filter((p) => LOGOS[p.en]);
+  const row = [...withLogos, ...withLogos, ...withLogos];
 
   return (
     <section className="relative overflow-hidden border-y border-line bg-surface2 py-14">
