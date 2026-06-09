@@ -27,6 +27,7 @@ export const COL = {
   activities: "activities",
   invoices: "invoices",
   events: "events",
+  settings: "settings",
   messages: (projectId: string) => `projects/${projectId}/messages`,
 } as const;
 

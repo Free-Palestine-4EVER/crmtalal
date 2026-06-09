@@ -19,7 +19,9 @@ import type {
   Activity,
   Message,
   Role,
+  OrgSettings,
 } from "@/lib/types";
+import { DEFAULT_ORG } from "@/lib/types";
 
 /* ---- Projects (role-scoped) ---- */
 export function useProjects() {
@@ -145,4 +147,13 @@ export function useUsersByRole(targetRole: Role) {
     [where("role", "==", targetRole), orderBy("createdAt", "desc")],
     [role, targetRole],
   );
+}
+
+/* ---- Organization settings (merged with defaults) ---- */
+export function useOrgSettings(): { org: OrgSettings; loading: boolean } {
+  const { data, loading } = useDocument<OrgSettings>(
+    `${COL.settings}/org`,
+    [],
+  );
+  return { org: { ...DEFAULT_ORG, ...(data ?? {}) }, loading };
 }

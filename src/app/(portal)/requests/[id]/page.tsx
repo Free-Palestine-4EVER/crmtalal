@@ -301,6 +301,14 @@ export default function RequestDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle>{d.project.deliverables}</CardTitle>
+              <Button
+                href={`/requests/${p.id}/report`}
+                variant="subtle"
+                size="sm"
+              >
+                <FileText className="h-4 w-4" />
+                {locale === "ar" ? "تقرير التقييم" : "Valuation report"}
+              </Button>
             </CardHeader>
             <CardBody className="space-y-3">
               {p.reports.length === 0 ? (

@@ -270,6 +270,7 @@ export const en = {
     invoices: "Invoices",
     activity: "Activity log",
     team: "Team",
+    organization: "Organization",
     documents: "Documents",
     addLead: "Add lead",
     addContact: "Add contact",

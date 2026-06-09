@@ -14,6 +14,7 @@ import {
   Activity,
   UserCog,
   FileCheck,
+  Landmark,
 } from "lucide-react";
 import type { Role } from "./types";
 import type { Dictionary } from "@/i18n/dictionaries/en";
@@ -45,6 +46,7 @@ export const NAV_ITEMS: NavItem[] = [
   { key: "activity", href: "/activity", icon: Activity, roles: ["admin"], group: "insights", label: (d) => d.modules.activity },
   { key: "clients", href: "/clients", icon: Users, roles: ["admin"], group: "manage", label: (d) => d.dash.clients },
   { key: "team", href: "/team", icon: UserCog, roles: ["admin"], group: "manage", label: (d) => d.modules.team },
+  { key: "organization", href: "/organization", icon: Landmark, roles: ["admin"], group: "manage", label: (d) => d.modules.organization },
 ];
 
 export const GROUP_LABEL: Record<NavGroup, (d: Dictionary) => string> = {

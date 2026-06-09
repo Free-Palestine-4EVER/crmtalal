@@ -85,6 +85,12 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ---- Org settings (everyone signed-in reads; admin writes via API) ----
+    match /settings/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // ---- Counters (sequence for codes) ----
     match /counters/{id} {
       allow read, write: if false; // server only

@@ -639,3 +639,43 @@ export const CALENDAR_EVENT_TYPES: CalendarEventType[] = [
 export function makeInvoiceNumber(seq: number, year: number): string {
   return `INV-${year}-${String(seq).padStart(4, "0")}`;
 }
+
+/* ============================================================
+   Organization settings (single doc: settings/org)
+   ============================================================ */
+export interface OrgSettings {
+  nameEn?: string;
+  nameAr?: string;
+  legalNameEn?: string;
+  legalNameAr?: string;
+  tagline?: string;
+  licenseNo?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  addressEn?: string;
+  addressAr?: string;
+  logoUrl?: string;
+  defaultFee?: number;
+  vatRate?: number; // %
+  reportNote?: string; // footer note shown on reports
+  updatedAt?: number;
+}
+
+export const DEFAULT_ORG: OrgSettings = {
+  nameEn: "Edarah",
+  nameAr: "إدارة",
+  legalNameEn: "Edarah Real Estate Valuation Co.",
+  legalNameAr: "شركة إدارة للتقييم العقاري",
+  tagline: "Accurate Values… Proven Expertise",
+  licenseNo: "",
+  phone: "0566633391",
+  email: "info@edarah.sa",
+  website: "edarah.sa",
+  addressEn: "Riyadh, Kingdom of Saudi Arabia",
+  addressAr: "الرياض، المملكة العربية السعودية",
+  defaultFee: 0,
+  vatRate: 15,
+  reportNote:
+    "Accredited by the Saudi Authority for Accredited Valuers (TAQEEM). Reports comply with International Valuation Standards (IVS).",
+};

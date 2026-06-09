@@ -272,6 +272,7 @@ export const ar: Dictionary = {
     invoices: "الفواتير",
     activity: "سجل النشاط",
     team: "الفريق",
+    organization: "المؤسسة",
     documents: "المستندات",
     addLead: "إضافة عميل محتمل",
     addContact: "إضافة جهة اتصال",
