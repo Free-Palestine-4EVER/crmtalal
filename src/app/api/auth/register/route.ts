@@ -13,6 +13,7 @@ import {
   NOTIF_TITLE,
   locEvent,
 } from "@/lib/server/notify";
+import { sendWelcomeEmail } from "@/lib/server/email";
 
 export async function POST(req: Request) {
   if (!adminEnabled) return notConfigured();
@@ -45,11 +46,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ profile: { uid, ...existing.data() } });
   }
 
-  const bootstrap = (process.env.ADMIN_BOOTSTRAP_EMAILS || "")
+  const adminList = (process.env.ADMIN_BOOTSTRAP_EMAILS || "")
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
-  const role = email && bootstrap.includes(email) ? "admin" : "client";
+  const employeeList = (process.env.EMPLOYEE_BOOTSTRAP_EMAILS || "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const role: "admin" | "employee" | "client" =
+    email && adminList.includes(email)
+      ? "admin"
+      : email && employeeList.includes(email)
+        ? "employee"
+        : "client";
 
   await ref.set({
     email,
@@ -70,6 +80,10 @@ export async function POST(req: Request) {
       body: locEvent((d) => d.events.newClient, { name }),
       link: "/clients",
     });
+  }
+
+  if (email) {
+    await sendWelcomeEmail(email, name, locale);
   }
 
   return NextResponse.json({

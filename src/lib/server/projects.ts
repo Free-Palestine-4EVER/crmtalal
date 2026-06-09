@@ -109,6 +109,17 @@ async function getProject(id: string): Promise<ProjectDoc> {
   };
 }
 
+/** Recipients = the given users + all admins, deduped, minus the actor. */
+async function withAdmins(
+  base: (string | null | undefined)[],
+  actorUid: string,
+): Promise<string[]> {
+  const admins = await getAdminUids();
+  return Array.from(
+    new Set([...base, ...admins].filter(Boolean) as string[]),
+  ).filter((u) => u !== actorUid);
+}
+
 function isAdmin(a: Actor) {
   return a.role === "admin";
 }
@@ -228,8 +239,9 @@ export async function changeStatus(
     timeline: FieldValue.arrayUnion(tEntry("status", actor, { status, note: note ?? null })),
   });
   const statusLabel = en.status[status];
+  const recipients = await withAdmins([p.clientId], actor.uid);
   if (status === "completed") {
-    await notifyUsers([p.clientId], {
+    await notifyUsers(recipients, {
       type: "completed",
       title: NOTIF_TITLE.completed,
       body: locEvent((d) => d.events.completed, { code: p.code }),
@@ -238,7 +250,7 @@ export async function changeStatus(
       link: `/requests/${id}`,
     });
   } else {
-    await notifyUsers([p.clientId], {
+    await notifyUsers(recipients, {
       type: "status_changed",
       title: NOTIF_TITLE.status_changed,
       body: locEvent((d) => d.events.statusChanged, {
@@ -281,7 +293,7 @@ export async function assignProject(
     projectCode: p.code,
     link: `/requests/${id}`,
   });
-  await notifyUsers([p.clientId], {
+  await notifyUsers(await withAdmins([p.clientId], actor.uid), {
     type: "assigned",
     title: NOTIF_TITLE.assigned,
     body: locEvent((d) => d.events.assignedClient, { code: p.code }),
@@ -329,7 +341,7 @@ export async function updateFields(
   await adminDb.collection(COL.projects).doc(id).update(update);
 
   if (fields.fee !== undefined) {
-    await notifyUsers([p.clientId], {
+    await notifyUsers(await withAdmins([p.clientId], actor.uid), {
       type: "fee_set",
       title: NOTIF_TITLE.fee_set,
       body: locEvent((d) => d.events.feeSet, { code: p.code }),
@@ -373,11 +385,8 @@ export async function attachDocument(
     timeline: FieldValue.arrayUnion(tEntry("document", actor, { note: doc.name })),
   });
   // Notify the "other side"
-  const recipients =
-    actor.uid === p.clientId
-      ? [p.assignedTo, ...(await getAdminUids())].filter(Boolean as never)
-      : [p.clientId];
-  await notifyUsers(recipients as string[], {
+  const recipients = await withAdmins([p.clientId, p.assignedTo], actor.uid);
+  await notifyUsers(recipients, {
     type: "document",
     title: NOTIF_TITLE.document,
     body: locEvent((d) => d.events.documentUploaded, { code: p.code }),
@@ -410,7 +419,7 @@ export async function attachReport(
     update.status = "report_ready";
   }
   await adminDb.collection(COL.projects).doc(id).update(update);
-  await notifyUsers([p.clientId], {
+  await notifyUsers(await withAdmins([p.clientId], actor.uid), {
     type: "report_ready",
     title: NOTIF_TITLE.report_ready,
     body: locEvent((d) => d.events.reportReady, { code: p.code }),
@@ -437,17 +446,15 @@ export async function sendMessage(actor: Actor, id: string, text: string) {
     .collection(COL.projects)
     .doc(id)
     .update({ updatedAt: FieldValue.serverTimestamp() });
-  const recipients =
-    actor.uid === p.clientId
-      ? [p.assignedTo, ...(await getAdminUids())].filter(Boolean as never)
-      : [p.clientId];
-  await notifyUsers(recipients as string[], {
+  const recipients = await withAdmins([p.clientId, p.assignedTo], actor.uid);
+  await notifyUsers(recipients, {
     type: "message",
     title: NOTIF_TITLE.message,
     body: locEvent((d) => d.events.newMessage, { code: p.code }),
     projectId: id,
     projectCode: p.code,
     link: `/requests/${id}`,
+    email: false,
   });
   return { ok: true };
 }

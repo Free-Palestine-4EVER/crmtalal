@@ -6,6 +6,7 @@ import { ar } from "@/i18n/dictionaries/ar";
 import { interpolate } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 import type { NotificationType } from "@/lib/types";
+import { sendEventEmail } from "./email";
 
 type Loc = { ar: string; en: string };
 
@@ -82,6 +83,8 @@ type NotifyInput = {
   projectId?: string;
   projectCode?: string;
   link?: string;
+  /** Set false to skip the email channel (e.g. high-frequency chat). */
+  email?: boolean;
 };
 
 /** Write an in-app notification document for one user. */
@@ -108,6 +111,27 @@ export async function notifyUsers(
   if (targets.length === 0) return;
   await Promise.all(targets.map((uid) => writeNotification(uid, n)));
   await pushToUsers(targets, n.title, n.body, n.link);
+
+  // Email channel — look up each recipient's address + language.
+  if (n.email !== false) {
+    try {
+      const snaps = await Promise.all(
+        targets.map((uid) => adminDb.collection(COL.users).doc(uid).get()),
+      );
+      await Promise.all(
+        snaps.map((s) => {
+          const data = s.data();
+          const email = data?.email as string | undefined;
+          if (!email) return Promise.resolve();
+          const loc = data?.locale === "en" ? "en" : "ar";
+          return sendEventEmail(email, loc, n.title[loc], n.body[loc], n.link);
+        }),
+      );
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error("[Edarah] event email failed", e);
+    }
+  }
 }
 
 /** All admin user ids — recipients of operational alerts. */
