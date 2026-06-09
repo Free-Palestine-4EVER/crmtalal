@@ -71,7 +71,8 @@ function RevealHeadline({ title, accent }: { title: string; accent: string }) {
 }
 
 export function Hero() {
-  const { dict, L } = useI18n();
+  const { dict, L, locale } = useI18n();
+  const dir = locale === "ar" ? "rtl" : "ltr";
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -122,22 +123,14 @@ export function Hero() {
       />
       <GoldDust />
 
-      {/* ── content grid — in RTL: col‑1 (form) lands visual-right, col‑2 (tower+copy) visual-left ── */}
-      <div className="relative z-10 mx-auto grid min-h-svh max-w-7xl items-center gap-10 px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[0.92fr_1.08fr] lg:gap-6 lg:pt-24">
-        {/* ════ FORM — pure glass over the image ════ */}
-        <motion.div
-          id="request"
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.85, ease: EASE_LUXE, delay: 0.45 }}
-          style={{ y: formY }}
-          className="order-2 flex scroll-mt-24 justify-center lg:order-1 lg:justify-start"
-        >
-          <QuickRequest />
-        </motion.div>
-
-        {/* ════ TOWER + TEXT OVER IT ════ */}
-        <div className="relative order-1 lg:order-2 lg:min-h-[82svh]">
+      {/* ── content grid — dir=ltr PINS the sides in both locales:
+             col-1 = tower+copy (LEFT), col-2 = form (RIGHT) ── */}
+      <div
+        dir="ltr"
+        className="relative z-10 mx-auto grid min-h-svh max-w-7xl items-center gap-10 px-5 pb-16 pt-28 sm:px-8 sm:pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-6 lg:pt-24"
+      >
+        {/* ════ TOWER + TEXT OVER IT — physically LEFT ════ */}
+        <div dir={dir} className="relative lg:min-h-[94svh]">
           {/* the 3D tower fills this half, descending into frame on scroll */}
           <motion.div
             style={{ y: towerY }}
@@ -249,6 +242,19 @@ export function Hero() {
             </motion.p>
           </motion.div>
         </div>
+
+        {/* ════ FORM — pure glass over the image, physically RIGHT ════ */}
+        <motion.div
+          id="request"
+          dir={dir}
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: EASE_LUXE, delay: 0.45 }}
+          style={{ y: formY }}
+          className="flex scroll-mt-24 justify-center pb-6 lg:justify-end lg:pb-0"
+        >
+          <QuickRequest />
+        </motion.div>
       </div>
 
         {/* bottom fade into the next section */}

@@ -22,7 +22,12 @@ import {
   type ReactNode,
 } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, ContactShadows } from "@react-three/drei";
+import {
+  useGLTF,
+  ContactShadows,
+  Environment,
+  Lightformer,
+} from "@react-three/drei";
 import * as THREE from "three";
 
 type Props = {
@@ -111,7 +116,15 @@ function Model({
         mesh.receiveShadow = false;
         const mat = mesh.material as THREE.MeshStandardMaterial;
         if (mat) {
-          mat.envMapIntensity = 1.35;
+          mat.envMapIntensity = 1.6;
+          // fully-metallic mirror materials go black wherever the environment
+          // doesn't cover — soften so direct lights always contribute
+          if (typeof mat.metalness === "number" && mat.metalness > 0.85) {
+            mat.metalness = 0.8;
+          }
+          if (typeof mat.roughness === "number" && mat.roughness < 0.18) {
+            mat.roughness = 0.18;
+          }
           if (mat.transparent && mat.opacity < 1) {
             mat.transparent = false;
             mat.opacity = 1;
@@ -189,7 +202,7 @@ export function ModelStage({
     }
     const nearObs = new IntersectionObserver(
       ([e]) => e.isIntersecting && (setNear(true), nearObs.disconnect()),
-      { rootMargin: "600px" },
+      { rootMargin: "1600px" }, // start fetching well ahead — models are ready before arrival
     );
     const viewObs = new IntersectionObserver(
       ([e]) => setInView(e.isIntersecting),
@@ -249,6 +262,52 @@ export function ModelStage({
             <pointLight position={[0, -3, 4]} intensity={0.8} color="#72142f" />
             <spotLight position={[0, 6, 2]} angle={0.5} penumbra={1} intensity={1.1} color="#fff3d6" />
             <Suspense fallback={null}>
+              {/* procedural gold environment — metallic PBR materials need
+                  something to reflect or they render black. Generated on the
+                  GPU (no network fetch). */}
+              <Environment resolution={256} frames={1}>
+                <Lightformer
+                  intensity={2.6}
+                  position={[0, 4, 3]}
+                  scale={[9, 5, 1]}
+                  color="#fff6e0"
+                />
+                <Lightformer
+                  intensity={1.8}
+                  position={[-4, 1, -2]}
+                  rotation-y={Math.PI / 2}
+                  scale={[7, 3, 1]}
+                  color="#e7ce8e"
+                />
+                <Lightformer
+                  intensity={1.3}
+                  position={[4, -1, 2]}
+                  rotation-y={-Math.PI / 2}
+                  scale={[7, 3, 1]}
+                  color="#c9a24c"
+                />
+                <Lightformer
+                  intensity={0.9}
+                  position={[0, -3, -3]}
+                  scale={[9, 3, 1]}
+                  color="#72142f"
+                />
+                {/* wrap-around fill so no facing angle ever goes black */}
+                <Lightformer
+                  intensity={1.4}
+                  position={[0, 1, -5]}
+                  rotation-y={Math.PI}
+                  scale={[10, 6, 1]}
+                  color="#d9bc79"
+                />
+                <Lightformer
+                  intensity={1.2}
+                  position={[0, 6, 0]}
+                  rotation-x={Math.PI / 2}
+                  scale={[10, 10, 1]}
+                  color="#fff1d6"
+                />
+              </Environment>
               <Model
                 src={src}
                 fit={fit}
