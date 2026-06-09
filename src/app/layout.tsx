@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { fontVariables } from "@/lib/fonts";
 import { Providers } from "./providers";
@@ -68,12 +69,9 @@ export default async function RootLayout({
             loads (slow networks, old browsers, blocked CDNs). If hydration
             hasn't flagged itself within 6s, force-reveal every element that
             SSR'd in its pre-animation hidden state so the page is never blank. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "setTimeout(function(){try{if(document.documentElement.getAttribute('data-hydrated')==='1')return;var n=document.querySelectorAll('[style]');for(var i=0;i<n.length;i++){var s=n[i].style;if(s.opacity==='0'){s.opacity='1';s.transform='none';}}}catch(e){}},6000);",
-          }}
-        />
+        <Script id="hydration-rescue" strategy="beforeInteractive">
+          {"setTimeout(function(){try{if(document.documentElement.getAttribute('data-hydrated')==='1')return;var n=document.querySelectorAll('[style]');for(var i=0;i<n.length;i++){var s=n[i].style;if(s.opacity==='0'){s.opacity='1';s.transform='none';}}}catch(e){}},6000);"}
+        </Script>
         <Providers initialLocale={locale}>{children}</Providers>
       </body>
     </html>
