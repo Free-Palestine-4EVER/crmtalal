@@ -12,6 +12,7 @@ import { ContactStrip } from "@/components/site/sections/ContactStrip";
 import { CtaBand } from "@/components/site/sections/CtaBand";
 import { PenSignature } from "@/components/site/sections/PenSignature";
 import { ParallaxShowcase } from "@/components/site/ParallaxShowcase";
+import { WordBand } from "@/components/site/WordBand";
 
 export default function Home() {
   return (
@@ -19,20 +20,19 @@ export default function Home() {
       <SiteNav />
       <main>
         <Hero />
+        <WordBand />
         <PartnersMarquee />
         <Services />
 
+        {/* skyline artwork — calligraphy + tagline are baked into the image */}
         <ParallaxShowcase
+          bare
           image="/images/parallax-1.jpg"
           fallback="linear-gradient(135deg, #14161d 0%, #3a0a19 55%, #72142f 100%)"
           eyebrow={{ ar: "مرجعية موثوقة", en: "A trusted benchmark" }}
           title={{
             ar: "نُقيّم ما يصنع ملامح المدن",
             en: "We value what shapes the skyline.",
-          }}
-          sub={{
-            ar: "من الأرض الخام إلى الأبراج الشاهقة — نمنح كل أصل قيمته الحقيقية بثقةٍ تَصمد أمام أكبر القرارات.",
-            en: "From raw land to soaring towers — we give every asset its true worth, with confidence that holds up to the biggest decisions.",
           }}
         />
 

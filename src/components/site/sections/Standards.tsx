@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { TiltCard } from "@/components/site/TiltCard";
 import { fadeUp, staggerContainer } from "@/components/motion/variants";
 import { useI18n } from "@/i18n";
 import { STANDARDS } from "@/content/site";
@@ -36,8 +37,8 @@ export function Standards() {
           className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
           {STANDARDS.map((s) => (
+            <TiltCard key={s.abbr} className="group/tilt">
             <motion.div
-              key={s.abbr}
               variants={fadeUp}
               whileHover={reduce ? undefined : { y: -6 }}
               transition={{ type: "spring", stiffness: 320, damping: 26 }}
@@ -58,6 +59,7 @@ export function Standards() {
                 {L(s.desc)}
               </p>
             </motion.div>
+            </TiltCard>
           ))}
         </motion.div>
       </div>

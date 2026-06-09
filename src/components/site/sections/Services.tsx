@@ -3,10 +3,12 @@
 import { Check } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { TiltCard } from "@/components/site/TiltCard";
 import { getIcon } from "@/components/site/icons";
 import { fadeUp, staggerContainer } from "@/components/motion/variants";
 import { useI18n } from "@/i18n";
 import { SERVICES } from "@/content/site";
+import { cn } from "@/lib/cn";
 
 export function Services() {
   const { dict, L } = useI18n();
@@ -36,13 +38,16 @@ export function Services() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-6"
         >
           {SERVICES.map((service, i) => {
             const Icon = getIcon(service.icon);
             return (
-              <motion.article
+              <TiltCard
                 key={service.id}
+                className={cn("group/tilt", i < 2 ? "lg:col-span-3" : "lg:col-span-2")}
+              >
+              <motion.article
                 variants={fadeUp}
                 whileHover={reduce ? undefined : { y: -6 }}
                 transition={{ type: "spring", stiffness: 320, damping: 26 }}
@@ -87,6 +92,7 @@ export function Services() {
                   ))}
                 </ul>
               </motion.article>
+              </TiltCard>
             );
           })}
         </motion.div>

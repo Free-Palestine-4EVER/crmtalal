@@ -142,7 +142,7 @@ export function QuickRequest() {
   };
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-[#ece3d2] bg-white p-6 shadow-[0_30px_70px_-30px_rgba(114,20,47,0.35)] sm:p-7">
+    <div className="w-full max-w-md rounded-2xl border border-[#ece3d2] bg-white p-6 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-gold-500/25 sm:p-7">
       <AnimatePresence mode="wait">
         {step === "form" ? (
           <motion.form

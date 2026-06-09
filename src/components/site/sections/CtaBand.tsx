@@ -3,6 +3,7 @@
 import { MessageCircle, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
+import { Magnetic } from "@/components/site/Magnetic";
 import { Button } from "@/components/ui/Button";
 import { TopoPattern } from "@/components/brand/TopoPattern";
 import { useI18n } from "@/i18n";
@@ -59,25 +60,29 @@ export function CtaBand() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: EASE_LUXE }}
             >
-              <Button
-                href="/register"
-                variant="gold"
-                size="lg"
-                className="group shadow-[0_18px_50px_-18px_rgba(201,162,76,0.7)]"
-              >
-                {dict.cta.button}
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:rotate-[-90deg]" />
-              </Button>
-              <Button
-                href={`https://wa.me/${CONTACT.whatsapp}`}
-                variant="outline"
-                size="lg"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <MessageCircle className="h-4 w-4" />
-                {dict.cta.secondary}
-              </Button>
+              <Magnetic>
+                <Button
+                  href="/register"
+                  variant="gold"
+                  size="lg"
+                  className="group shadow-[0_18px_50px_-18px_rgba(201,162,76,0.7)]"
+                >
+                  {dict.cta.button}
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:rotate-[-90deg]" />
+                </Button>
+              </Magnetic>
+              <Magnetic>
+                <Button
+                  href={`https://wa.me/${CONTACT.whatsapp}`}
+                  variant="outline"
+                  size="lg"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  {dict.cta.secondary}
+                </Button>
+              </Magnetic>
             </motion.div>
           </Reveal>
         </div>

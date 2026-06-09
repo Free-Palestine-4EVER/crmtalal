@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { fadeUp, staggerContainer } from "@/components/motion/variants";
 import { useI18n } from "@/i18n";
@@ -9,6 +15,12 @@ import { PROCESS_STEPS } from "@/content/site";
 export function Process() {
   const { dict, L } = useI18n();
   const reduce = useReducedMotion();
+  const trackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ["start 85%", "start 35%"],
+  });
+  const drawn = useSpring(scrollYProgress, { stiffness: 90, damping: 24 });
 
   return (
     <section
@@ -22,12 +34,17 @@ export function Process() {
           index="02"
         />
 
-        <div className="relative mt-20">
-          {/* connecting hairline (large screens) — theme-aware gold */}
+        <div ref={trackRef} className="relative mt-20">
+          {/* gold line that draws itself as you scroll (large screens) */}
           <div
             aria-hidden
-            className="absolute inset-x-7 top-8 hidden h-px bg-gradient-to-r from-transparent via-[var(--s-gold)]/45 to-transparent lg:block"
-          />
+            className="absolute inset-x-7 top-8 hidden h-px overflow-hidden lg:block"
+          >
+            <motion.div
+              style={{ scaleX: reduce ? 1 : drawn }}
+              className="h-full w-full origin-left bg-gradient-to-r from-[var(--s-gold)]/15 via-[var(--s-gold)]/70 to-[var(--s-gold)]/15 rtl:origin-right"
+            />
+          </div>
 
           <motion.ol
             variants={staggerContainer(0.09, 0.05)}

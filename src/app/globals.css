@@ -361,6 +361,26 @@
     animation: marquee var(--marquee-dur, 32s) linear infinite;
   }
   .marquee:hover { animation-play-state: paused; }
+
+  /* hollow display type — editorial outline words */
+  .text-outline {
+    -webkit-text-stroke: 1.5px color-mix(in oklab, var(--s-fg) 30%, transparent);
+    color: transparent;
+  }
+  .text-outline-gold {
+    -webkit-text-stroke: 1.5px color-mix(in oklab, var(--s-gold) 65%, transparent);
+    color: transparent;
+  }
+
+  /* floating gold dust motes */
+  .dust {
+    animation: dustFloat var(--dust-dur, 7s) ease-in-out var(--dust-delay, 0s) infinite;
+  }
+}
+
+@keyframes dustFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: var(--dust-o, 0.45); }
+  50% { transform: translateY(-22px) scale(1.2); opacity: calc(var(--dust-o, 0.45) * 1.7); }
 }
 
 @keyframes marquee {

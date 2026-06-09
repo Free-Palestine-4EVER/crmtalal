@@ -18,6 +18,8 @@ type Props = {
   /** fallback gradient shown until the photo is dropped in */
   fallback?: string;
   align?: "center" | "start";
+  /** image-only mode — for artwork with text already baked in */
+  bare?: boolean;
 };
 
 const DEFAULT_FALLBACK =
@@ -30,6 +32,7 @@ export function ParallaxShowcase({
   sub,
   fallback = DEFAULT_FALLBACK,
   align = "center",
+  bare = false,
 }: Props) {
   const { L } = useI18n();
   const reduce = useReducedMotion();
@@ -62,22 +65,26 @@ export function ParallaxShowcase({
         className="pointer-events-none absolute inset-[-12%] bg-cover bg-center"
       />
       {/* legibility overlays */}
-      <motion.div
-        aria-hidden
-        style={{ opacity: overlayOpacity }}
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0405] via-[#0a0405]/40 to-[#0a0405]/60"
-      />
+      {!bare && (
+        <motion.div
+          aria-hidden
+          style={{ opacity: overlayOpacity }}
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0405] via-[#0a0405]/40 to-[#0a0405]/60"
+        />
+      )}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(90% 70% at 50% 50%, transparent 30%, rgba(8,4,5,0.55) 100%)",
+          background: bare
+            ? "radial-gradient(95% 80% at 50% 50%, transparent 55%, rgba(8,4,5,0.4) 100%)"
+            : "radial-gradient(90% 70% at 50% 50%, transparent 30%, rgba(8,4,5,0.55) 100%)",
         }}
       />
       {/* fine grain */}
       <div className="grain pointer-events-none absolute inset-0" />
 
+      {!bare && (
       <motion.div
         style={{ y: textY }}
         className={`relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 ${
@@ -124,6 +131,7 @@ export function ParallaxShowcase({
           )}
         </div>
       </motion.div>
+      )}
     </section>
   );
 }

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { PenLine, ShieldCheck, FileCheck2, Stamp } from "lucide-react";
 import { TopoPattern } from "@/components/brand/TopoPattern";
+import { GoldDust } from "@/components/site/GoldDust";
 import { useI18n } from "@/i18n";
 import { EASE_LUXE } from "@/components/motion/variants";
 
@@ -44,6 +45,7 @@ export function PenSignature() {
     <section className="bg-brand-radial bg-grain relative isolate overflow-hidden py-24 sm:py-28">
       <TopoPattern className="text-gold-500" opacity={0.1} />
       <div className="glow-gold pointer-events-none absolute inset-x-0 -top-16 h-72 opacity-70" />
+      <GoldDust />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-8">
         {/* ── Text ── */}

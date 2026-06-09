@@ -9,6 +9,7 @@ import {
 } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import Lenis from "lenis";
+import { SiteCursor } from "@/components/site/SiteCursor";
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -82,6 +83,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <SiteThemeCtx.Provider value={{ theme, toggle, setTheme }}>
       <div className="site-root min-h-svh" data-theme={theme}>
+        <SiteCursor />
         {children}
       </div>
     </SiteThemeCtx.Provider>
