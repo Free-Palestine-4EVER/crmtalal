@@ -1,10 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { LocaleProvider, useI18n, type Locale } from "@/i18n";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
 import { OneSignalProvider } from "@/lib/onesignal/OneSignalProvider";
 import { PWA } from "@/components/pwa/PWA";
+
+/** Flags successful hydration so the layout's rescue script stands down. */
+function HydrationMark() {
+  useEffect(() => {
+    document.documentElement.setAttribute("data-hydrated", "1");
+  }, []);
+  return null;
+}
 
 function ThemedToaster() {
   const { dir } = useI18n();
@@ -38,6 +47,7 @@ export function Providers({
     <LocaleProvider initialLocale={initialLocale}>
       <AuthProvider>
         <OneSignalProvider>
+          <HydrationMark />
           {children}
           <ThemedToaster />
           <PWA />

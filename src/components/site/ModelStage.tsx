@@ -37,6 +37,8 @@ type Props = {
   lift?: number;
   /** how strongly scroll progress spins the model (radians across the section) */
   scrollSpin?: number;
+  /** cinematic entrance: the model rises + scales into place on first view */
+  rise?: boolean;
   className?: string;
   shadow?: boolean;
 };
@@ -73,6 +75,7 @@ function Model({
   spin = 0.16,
   lift = 0,
   scrollSpin = Math.PI * 1.6,
+  rise = false,
   scroll,
   mouse,
 }: {
@@ -81,11 +84,13 @@ function Model({
   spin?: number;
   lift?: number;
   scrollSpin?: number;
+  rise?: boolean;
   scroll: React.RefObject<number>;
   mouse: React.RefObject<{ x: number; y: number }>;
 }) {
   const { scene } = useGLTF(src);
   const group = useRef<THREE.Group>(null);
+  const born = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     const box = new THREE.Box3().setFromObject(scene);
@@ -120,12 +125,19 @@ function Model({
     const s = scroll.current ?? 0; // 0..1 through this stage's viewport journey
     const mx = mouse.current?.x ?? 0;
     const my = mouse.current?.y ?? 0;
-    const targetY = t * spin + s * scrollSpin + mx * 0.55;
+
+    // cinematic build-up: rise from below + scale into place on first view
+    if (born.current === null) born.current = t;
+    const age = t - born.current;
+    const e = rise ? 1 - Math.pow(1 - Math.min(1, age / 1.8), 3) : 1; // easeOutCubic
+
+    const targetY = t * spin + s * scrollSpin + mx * 0.55 + (1 - e) * 0.9;
     const targetX = Math.sin(t * 0.5) * 0.08 - my * 0.4 + (s - 0.5) * 0.45;
     g.rotation.y += (targetY - g.rotation.y) * 0.06;
     g.rotation.x += (targetX - g.rotation.x) * 0.06;
     g.rotation.z = Math.sin(t * 0.35) * 0.05;
-    g.position.y = lift + Math.sin(t * 0.6) * 0.1;
+    g.position.y = lift + Math.sin(t * 0.6) * 0.1 - (1 - e) * 3.2;
+    g.scale.setScalar(rise ? 0.55 + 0.45 * e : 1);
   });
 
   return (
@@ -142,6 +154,7 @@ export function ModelStage({
   spin = 0.16,
   lift = 0,
   scrollSpin,
+  rise = false,
   className,
   shadow = false,
 }: Props) {
@@ -229,6 +242,7 @@ export function ModelStage({
                 spin={spin}
                 lift={lift}
                 scrollSpin={scrollSpin}
+                rise={rise}
                 scroll={scroll}
                 mouse={mouse}
               />

@@ -1,7 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Phone, ArrowDown } from "lucide-react";
 import { TopoPattern } from "@/components/brand/TopoPattern";
 import { QuickRequest } from "@/components/site/QuickRequest";
@@ -67,12 +73,24 @@ function RevealHeadline({ title, accent }: { title: string; accent: string }) {
 export function Hero() {
   const { dict, L } = useI18n();
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  // layered scroll drift — copy lifts away, skyline sinks, panel parallax
+  const copyY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -90]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reduce ? 1 : 0.25]);
+  const skyY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "16%"]);
 
   return (
-    <section className="relative isolate overflow-hidden bg-surface">
+    <section ref={ref} className="relative isolate overflow-hidden bg-surface">
       <div className="grid lg:min-h-svh lg:grid-cols-[1.04fr_0.96fr]">
-        {/* ════ LEFT — editorial light panel ════ */}
-        <div className="grain relative flex flex-col justify-center px-5 pb-16 pt-28 sm:px-10 sm:pt-32 lg:ps-[max(2.5rem,calc((100vw-80rem)/2+2rem))] lg:pe-14 lg:pt-24">
+        {/* ════ LEFT — editorial light panel (drifts away on scroll) ════ */}
+        <motion.div
+          style={{ y: copyY, opacity: copyOpacity }}
+          className="grain relative flex flex-col justify-center px-5 pb-16 pt-28 sm:px-10 sm:pt-32 lg:ps-[max(2.5rem,calc((100vw-80rem)/2+2rem))] lg:pe-14 lg:pt-24"
+        >
           <div className="spotlight pointer-events-none absolute inset-0 -z-10" />
           <TopoPattern className="text-[var(--s-accent)]" opacity={0.05} />
 
@@ -172,7 +190,7 @@ export function Hero() {
           >
             RIYADH HQ — 24.7136°N, 46.6753°E&nbsp;&nbsp;·&nbsp;&nbsp;EST. 2012&nbsp;&nbsp;·&nbsp;&nbsp;TAQEEM LICENSE
           </motion.p>
-        </div>
+        </motion.div>
 
         {/* ════ RIGHT — cinematic dark panel: skyline + 3D + floating form ════ */}
         <motion.div
@@ -181,11 +199,11 @@ export function Hero() {
           transition={{ duration: 1, ease: EASE_LUXE, delay: 0.2 }}
           className="bg-brand-radial bg-grain relative flex flex-col overflow-hidden"
         >
-          {/* skyline photo, deep-graded into the panel */}
-          <div
+          {/* skyline photo, deep-graded into the panel — sinks slowly on scroll */}
+          <motion.div
             aria-hidden
-            className="absolute inset-0 bg-cover bg-center opacity-[0.32]"
-            style={{ backgroundImage: "url('/images/parallax-1.jpg')" }}
+            className="absolute inset-[-8%] bg-cover bg-center opacity-[0.32]"
+            style={{ y: skyY, backgroundImage: "url('/images/parallax-1.jpg')" }}
           />
           <div
             aria-hidden

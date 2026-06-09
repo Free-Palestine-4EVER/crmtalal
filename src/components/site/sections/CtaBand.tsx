@@ -1,14 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { MessageCircle, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import { Magnetic } from "@/components/site/Magnetic";
+import { GoldDust } from "@/components/site/GoldDust";
 import { Button } from "@/components/ui/Button";
 import { TopoPattern } from "@/components/brand/TopoPattern";
 import { useI18n } from "@/i18n";
 import { CONTACT } from "@/content/site";
 import { EASE_LUXE } from "@/components/motion/variants";
+
+const Ribbon3D = dynamic(
+  () => import("@/components/site/Ribbon3D").then((m) => m.Ribbon3D),
+  { ssr: false },
+);
 
 export function CtaBand() {
   const { dict, locale } = useI18n();
@@ -31,6 +38,12 @@ export function CtaBand() {
         />
         {/* soft maroon counter-glow, bottom */}
         <div className="glow-maroon pointer-events-none absolute inset-x-0 bottom-0 h-48 rotate-180 opacity-60" />
+
+        {/* the 3D ribbon mark, spinning behind the call to action */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-60">
+          <Ribbon3D />
+        </div>
+        <GoldDust className="opacity-70" />
 
         <div className="relative mx-auto max-w-3xl">
           <Reveal y={16}>

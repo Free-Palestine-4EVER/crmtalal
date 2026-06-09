@@ -64,6 +64,16 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-ink-900 text-[#d7dae2]">
+        {/* Hydration rescue — ES5-safe, runs even if the React bundle never
+            loads (slow networks, old browsers, blocked CDNs). If hydration
+            hasn't flagged itself within 6s, force-reveal every element that
+            SSR'd in its pre-animation hidden state so the page is never blank. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "setTimeout(function(){try{if(document.documentElement.getAttribute('data-hydrated')==='1')return;var n=document.querySelectorAll('[style]');for(var i=0;i<n.length;i++){var s=n[i].style;if(s.opacity==='0'){s.opacity='1';s.transform='none';}}}catch(e){}},6000);",
+          }}
+        />
         <Providers initialLocale={locale}>{children}</Providers>
       </body>
     </html>
