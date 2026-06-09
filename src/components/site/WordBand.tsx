@@ -23,13 +23,13 @@ export function WordBand() {
       {WORDS.map((w, i) => (
         <span key={`${key}-${i}`} className="flex items-center gap-8">
           <span
-            className={`whitespace-nowrap font-display text-5xl font-semibold uppercase leading-none tracking-tight sm:text-7xl ${
+            className={`whitespace-nowrap font-display text-4xl font-semibold uppercase leading-none tracking-tight sm:text-6xl ${
               i % 2 === 0 ? "text-outline" : "text-gold-shimmer"
             }`}
           >
             {L(w)}
           </span>
-          <span className="text-xl text-sgold/60" aria-hidden>
+          <span className="text-base text-sgold/50" aria-hidden>
             ◆
           </span>
         </span>

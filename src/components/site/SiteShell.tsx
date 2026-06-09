@@ -39,7 +39,7 @@ export const useSiteTheme = () => useContext(SiteThemeCtx);
 const KEY = "edarah_site_theme";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   // Restore preference
   useEffect(() => {

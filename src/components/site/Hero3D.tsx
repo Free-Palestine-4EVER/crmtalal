@@ -1,11 +1,10 @@
 "use client";
 
-import { useGLTF } from "@react-three/drei";
 import { ModelStage } from "@/components/site/ModelStage";
 
 const MODEL_URL = "/models/hero-ribbon-opt.glb";
 
-/** The hero ribbon — now larger and rendered on its own lit stage. */
+/** The hero ribbon — large, solid, on its own lit stage. */
 export function Hero3D() {
   return (
     <ModelStage
@@ -14,9 +13,8 @@ export function Hero3D() {
       distance={5.2}
       spin={0.22}
       lift={1.05}
+      scrollSpin={Math.PI * 1.2}
       className="!absolute inset-0"
     />
   );
 }
-
-useGLTF.preload(MODEL_URL);

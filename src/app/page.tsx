@@ -42,7 +42,7 @@ export default function Home() {
         <ParallaxShowcase
           image="/images/parallax-2.jpg"
           fallback="linear-gradient(135deg, #2a0712 0%, #5e1228 50%, #14161d 100%)"
-          align="start"
+          index="02"
           eyebrow={{ ar: "الدقة في كل تفصيل", en: "Precision in every detail" }}
           title={{
             ar: "كل رقم مُعايَن. كل تفصيل موثّق.",
@@ -60,6 +60,7 @@ export default function Home() {
         <ParallaxShowcase
           image="/images/parallax-3.jpg"
           fallback="linear-gradient(135deg, #0a0b0e 0%, #364655 55%, #72142f 100%)"
+          index="03"
           eyebrow={{ ar: "حضور يتجاوز الحدود", en: "Reach beyond borders" }}
           title={{
             ar: "ثقة تعبر الحدود",

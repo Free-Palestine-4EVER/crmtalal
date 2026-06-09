@@ -2,12 +2,13 @@
 
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
-import { BadgeCheck, Phone, ArrowDown } from "lucide-react";
+import { Phone, ArrowDown } from "lucide-react";
 import { TopoPattern } from "@/components/brand/TopoPattern";
 import { QuickRequest } from "@/components/site/QuickRequest";
 import { Counter } from "@/components/site/Counter";
 import { GoldDust } from "@/components/site/GoldDust";
 import { CircularBadge } from "@/components/site/CircularBadge";
+import { Magnetic } from "@/components/site/Magnetic";
 import { useI18n } from "@/i18n";
 import { STATS, CONTACT } from "@/content/site";
 import { EASE_LUXE } from "@/components/motion/variants";
@@ -89,9 +90,12 @@ export function Hero() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-scard/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-sgold backdrop-blur"
+            className="inline-flex w-fit items-center gap-3 font-mono text-[0.7rem] font-medium uppercase tracking-[0.3em] text-sgold"
           >
-            <BadgeCheck className="h-4 w-4" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--s-gold)] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--s-gold)]" />
+            </span>
             {dict.hero.eyebrow}
           </motion.span>
 
@@ -116,49 +120,58 @@ export function Hero() {
             className="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-4"
           >
             {STATS.map((s) => (
-              <div key={s.value} className="border-s-2 border-[var(--s-gold)]/40 ps-4">
-                <dt className="nums font-display text-[1.9rem] font-semibold leading-none text-accent sm:text-[2.3rem]">
+              <div key={s.value} className="border-t border-line pt-4">
+                <dt className="nums font-mono text-2xl font-semibold leading-none tracking-tight text-fg sm:text-[1.7rem]">
                   <Counter value={s.value} />
                 </dt>
-                <dd className="mt-2 text-xs leading-snug text-muted">{L(s.label)}</dd>
+                <dd className="mt-2 font-mono text-[0.62rem] uppercase leading-snug tracking-[0.18em] text-muted">
+                  {L(s.label)}
+                </dd>
               </div>
             ))}
           </motion.dl>
 
-          <div className="mt-10 flex flex-wrap items-center gap-6">
+          <div className="mt-11 flex flex-wrap items-center gap-5">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              <Magnetic>
+                <a
+                  href="#request"
+                  className="group inline-flex h-13 items-center gap-3 rounded-full bg-gradient-to-b from-gold-500 to-gold-600 px-7 font-semibold text-ink-950 shadow-[0_18px_50px_-16px_rgba(201,162,76,0.55)] transition-shadow hover:shadow-[0_22px_60px_-14px_rgba(201,162,76,0.75)]"
+                >
+                  {dict.hero.ctaPrimary}
+                  <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                </a>
+              </Magnetic>
+            </motion.div>
             <motion.a
               href={`tel:${CONTACT.phoneIntl}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.85 }}
-              className="group inline-flex items-center gap-2.5 text-sm font-medium text-soft transition-colors hover:text-accent"
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="group inline-flex items-center gap-2.5 font-mono text-sm font-medium text-soft transition-colors hover:text-accent"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--s-accent)]/10 text-accent transition-transform group-hover:scale-110">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-line text-accent transition-transform group-hover:scale-110">
                 <Phone className="h-4 w-4" />
               </span>
               <span dir="ltr">{CONTACT.phone1}</span>
             </motion.a>
 
-            <motion.a
-              href="#services"
-              aria-label={dict.hero.scroll}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1, duration: 0.8 }}
-              className="hidden items-center gap-2.5 text-muted transition-colors hover:text-accent sm:inline-flex"
-            >
-              <motion.span
-                animate={reduce ? {} : { y: [0, 5, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="grid h-10 w-10 place-items-center rounded-full border border-line"
-              >
-                <ArrowDown className="h-4 w-4" />
-              </motion.span>
-              <span className="text-[0.65rem] font-medium uppercase tracking-[0.22em]">
-                {dict.hero.scroll}
-              </span>
-            </motion.a>
           </div>
+
+          {/* mono coordinates footer — quiet craft detail */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            aria-hidden
+            className="mt-14 hidden font-mono text-[0.62rem] tracking-[0.25em] text-muted/60 lg:block"
+          >
+            RIYADH HQ — 24.7136°N, 46.6753°E&nbsp;&nbsp;·&nbsp;&nbsp;EST. 2012&nbsp;&nbsp;·&nbsp;&nbsp;TAQEEM LICENSE
+          </motion.p>
         </div>
 
         {/* ════ RIGHT — cinematic dark panel: skyline + 3D + floating form ════ */}
@@ -207,10 +220,11 @@ export function Hero() {
           {/* breathing room for the model, then the floating request form */}
           <div className="h-[19rem] shrink-0 sm:h-[21rem] lg:h-auto lg:grow" />
           <motion.div
+            id="request"
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, ease: EASE_LUXE, delay: 0.5 }}
-            className="relative z-10 flex justify-center px-5 pb-10 sm:px-10 lg:pb-14"
+            className="relative z-10 flex scroll-mt-24 justify-center px-5 pb-10 sm:px-10 lg:pb-14"
           >
             <QuickRequest />
           </motion.div>

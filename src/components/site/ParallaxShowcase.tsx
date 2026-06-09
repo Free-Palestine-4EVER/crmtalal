@@ -17,6 +17,8 @@ type Props = {
   sub?: LocalizedText;
   /** fallback gradient shown until the photo is dropped in */
   fallback?: string;
+  /** chapter index shown as mono numeral, e.g. "02" */
+  index?: string;
   align?: "center" | "start";
   /** image-only mode — for artwork with text already baked in */
   bare?: boolean;
@@ -25,13 +27,17 @@ type Props = {
 const DEFAULT_FALLBACK =
   "linear-gradient(135deg, #2a0712 0%, #72142f 45%, #14161d 100%)";
 
+/**
+ * Full-bleed photographic chapter divider. The image drifts slower than the
+ * page (depth), the text is bottom-anchored like a film title card.
+ */
 export function ParallaxShowcase({
   image,
   eyebrow,
   title,
   sub,
   fallback = DEFAULT_FALLBACK,
-  align = "center",
+  index,
   bare = false,
 }: Props) {
   const { L } = useI18n();
@@ -42,76 +48,65 @@ export function ParallaxShowcase({
     target: ref,
     offset: ["start end", "end start"],
   });
-  // photo drifts up slower than the page → depth
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-12%", "12%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1.12, 1.04, 1.12]);
-  const textY = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["18%", "-18%"]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.55, 0.42, 0.62]);
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-10%", "10%"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1.08, 1.02, 1.08]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[82svh] items-center overflow-hidden"
+      className="relative isolate flex min-h-[88svh] items-end overflow-hidden"
       style={{ background: fallback }}
     >
-      {/* parallax photo layer (background-image → no broken icon if absent) */}
+      {/* parallax photo layer */}
       <motion.div
         aria-hidden
-        style={{
-          y,
-          scale,
-          backgroundImage: `url("${image}")`,
-        }}
-        className="pointer-events-none absolute inset-[-12%] bg-cover bg-center"
+        style={{ y, scale, backgroundImage: `url("${image}")` }}
+        className="pointer-events-none absolute inset-[-10%] bg-cover bg-center"
       />
-      {/* legibility overlays */}
-      {!bare && (
-        <motion.div
-          aria-hidden
-          style={{ opacity: overlayOpacity }}
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0405] via-[#0a0405]/40 to-[#0a0405]/60"
-        />
-      )}
+      {/* film grade */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background: bare
-            ? "radial-gradient(95% 80% at 50% 50%, transparent 55%, rgba(8,4,5,0.4) 100%)"
-            : "radial-gradient(90% 70% at 50% 50%, transparent 30%, rgba(8,4,5,0.55) 100%)",
+            ? "linear-gradient(to top, rgba(8,4,5,0.45), transparent 35%)"
+            : "linear-gradient(to top, rgba(8,4,5,0.94) 0%, rgba(8,4,5,0.35) 42%, rgba(8,4,5,0.18) 100%)",
         }}
       />
-      {/* fine grain */}
       <div className="grain pointer-events-none absolute inset-0" />
 
       {!bare && (
-      <motion.div
-        style={{ y: textY }}
-        className={`relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 ${
-          align === "center" ? "text-center" : "text-start"
-        }`}
-      >
-        <div className={align === "center" ? "mx-auto max-w-3xl" : "max-w-2xl"}>
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-14 sm:px-8 sm:pb-20">
+          {/* kicker rule */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-gold-300"
+            className="flex items-baseline gap-4 border-t border-cream-50/20 pt-5"
           >
-            <span className="h-px w-8 bg-gradient-to-r from-transparent to-gold-500/80" />
-            {L(eyebrow)}
-            {align === "center" && (
-              <span className="h-px w-8 bg-gradient-to-l from-transparent to-gold-500/80" />
+            {index && (
+              <span className="font-mono text-xs font-medium tracking-[0.2em] text-gold-300">
+                /&nbsp;{index}
+              </span>
             )}
-          </motion.span>
+            <span className="font-mono text-xs font-medium uppercase tracking-[0.3em] text-cream-100/70">
+              {L(eyebrow)}
+            </span>
+            <span
+              aria-hidden
+              className="ms-auto hidden font-mono text-xs tracking-[0.2em] text-cream-100/40 sm:block"
+            >
+              25.7°N — 46.7°E
+            </span>
+          </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
-            className="mt-6 text-balance font-display text-[2.5rem] font-semibold leading-[1.05] text-cream-50 drop-shadow-[0_2px_30px_rgba(0,0,0,0.6)] sm:text-6xl md:text-[4.2rem]"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+            className="mt-7 max-w-4xl text-balance font-display text-[2.6rem] font-semibold leading-[1.02] text-cream-50 drop-shadow-[0_2px_28px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-7xl"
           >
             {L(title)}
           </motion.h2>
@@ -120,17 +115,14 @@ export function ParallaxShowcase({
             <motion.p
               initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8, delay: 0.16 }}
-              className={`mt-6 text-pretty text-base leading-relaxed text-cream-100/85 sm:text-lg ${
-                align === "center" ? "mx-auto max-w-2xl" : "max-w-xl"
-              }`}
+              className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-cream-100/80 sm:text-lg"
             >
               {L(sub)}
             </motion.p>
           )}
         </div>
-      </motion.div>
       )}
     </section>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { useGLTF } from "@react-three/drei";
 import { ModelStage } from "@/components/site/ModelStage";
 
 const MODEL_URL = "/models/golden-pen-opt.glb";
@@ -11,12 +10,11 @@ export function Pen3D() {
     <ModelStage
       src={MODEL_URL}
       fit={4.6}
-      distance={5.6}
-      spin={0.14}
+      distance={5.4}
+      spin={0.1}
+      scrollSpin={Math.PI * 2.4}
       shadow
       className="!absolute inset-0"
     />
   );
 }
-
-useGLTF.preload(MODEL_URL);

@@ -1,15 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { TiltCard } from "@/components/site/TiltCard";
 import { fadeUp, staggerContainer } from "@/components/motion/variants";
 import { useI18n } from "@/i18n";
 import { STANDARDS } from "@/content/site";
 
 export function Standards() {
   const { dict, L } = useI18n();
-  const reduce = useReducedMotion();
 
   return (
     <section
@@ -29,39 +27,49 @@ export function Standards() {
           index="03"
         />
 
-        <motion.div
-          variants={staggerContainer(0.08, 0.05)}
+        {/* credentials wall — monumental rows */}
+        <motion.ol
+          variants={staggerContainer(0.1, 0.05)}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-14"
         >
-          {STANDARDS.map((s) => (
-            <TiltCard key={s.abbr} className="group/tilt">
-            <motion.div
+          {STANDARDS.map((s, i) => (
+            <motion.li
+              key={s.abbr}
               variants={fadeUp}
-              whileHover={reduce ? undefined : { y: -6 }}
-              transition={{ type: "spring", stiffness: 320, damping: 26 }}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-scard p-6 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.55)] transition-[border-color,box-shadow] duration-300 hover:border-[var(--s-gold-soft)]/55 hover:shadow-[0_28px_70px_-32px_var(--s-glow)]"
+              className="group relative border-t border-line last:border-b"
             >
-              {/* gold top hairline on hover */}
+              <div className="grid items-center gap-x-8 gap-y-2 py-8 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] sm:py-10">
+                <div className="flex items-baseline gap-5">
+                  <span className="font-mono text-xs tracking-[0.2em] text-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className="text-outline font-display text-[3.2rem] font-semibold leading-none tracking-tight transition-all duration-500 group-hover:text-sgold sm:text-[4.6rem] lg:text-[5.4rem]"
+                    style={{
+                      WebkitTextStrokeColor: "color-mix(in oklab, var(--s-gold) 55%, transparent)",
+                    }}
+                  >
+                    {s.abbr}
+                  </span>
+                </div>
+                <div className="sm:justify-self-end sm:text-end">
+                  <h3 className="text-base font-semibold text-fg">{L(s.title)}</h3>
+                  <p className="mt-1.5 max-w-md text-pretty text-sm leading-relaxed text-soft sm:ms-auto">
+                    {L(s.desc)}
+                  </p>
+                </div>
+              </div>
+              {/* gold sweep on hover */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--s-gold)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-[var(--s-gold)] via-[var(--s-gold)]/60 to-transparent transition-transform duration-700 group-hover:scale-x-100 rtl:origin-right"
               />
-
-              <span className="font-display text-[2.6rem] font-semibold leading-none tracking-tight text-sgold">
-                {s.abbr}
-              </span>
-              <span className="mt-2 h-px w-10 bg-[var(--s-gold)]/40 transition-all duration-300 group-hover:w-16" />
-              <h3 className="mt-4 text-sm font-semibold text-fg">{L(s.title)}</h3>
-              <p className="mt-2 text-pretty text-sm leading-relaxed text-soft">
-                {L(s.desc)}
-              </p>
-            </motion.div>
-            </TiltCard>
+            </motion.li>
           ))}
-        </motion.div>
+        </motion.ol>
       </div>
     </section>
   );

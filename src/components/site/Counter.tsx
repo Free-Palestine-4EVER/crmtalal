@@ -38,7 +38,7 @@ export function Counter({
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {display.toLocaleString()}
+      {isYear ? String(display) : display.toLocaleString()}
       {suffix}
     </span>
   );
