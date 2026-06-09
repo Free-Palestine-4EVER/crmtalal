@@ -12,7 +12,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/form";
 import { auth, firebaseEnabled } from "@/lib/firebase/client";
-import { authErrorMessage } from "@/lib/auth/firebaseErrors";
+import { describeAuthError } from "@/lib/auth/firebaseErrors";
 import { apiFetch } from "@/lib/api";
 import { useDict, useI18n } from "@/i18n";
 
@@ -52,8 +52,7 @@ export default function RegisterPage() {
       });
       router.replace("/dashboard");
     } catch (err) {
-      const code = (err as { code?: string })?.code ?? "";
-      toast.error(authErrorMessage(code, d));
+      toast.error(describeAuthError(err, d));
       setLoading(false);
     }
   }

@@ -13,7 +13,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/form";
 import { auth, firebaseEnabled } from "@/lib/firebase/client";
-import { authErrorMessage } from "@/lib/auth/firebaseErrors";
+import { describeAuthError } from "@/lib/auth/firebaseErrors";
 import { apiFetch } from "@/lib/api";
 import { useDict } from "@/i18n";
 import { cn } from "@/lib/cn";
@@ -36,10 +36,16 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      // Self-heal: ensure the Firestore profile exists (covers accounts whose
+      // profile failed to create at registration). Idempotent; non-blocking.
+      try {
+        await apiFetch("/api/auth/register", { body: {} });
+      } catch {
+        /* profile likely already exists */
+      }
       router.replace("/dashboard");
     } catch (err) {
-      const code = (err as { code?: string })?.code ?? "";
-      toast.error(authErrorMessage(code, d));
+      toast.error(describeAuthError(err, d));
       setLoading(false);
     }
   }
@@ -53,8 +59,7 @@ export default function LoginPage() {
       await apiFetch("/api/auth/register", { body: {} });
       router.replace("/dashboard");
     } catch (err) {
-      const code = (err as { code?: string })?.code ?? "";
-      toast.error(authErrorMessage(code, d));
+      toast.error(describeAuthError(err, d));
       setGoogleLoading(false);
     }
   }

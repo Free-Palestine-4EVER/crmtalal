@@ -206,6 +206,12 @@ export const en = {
     weakPassword: "Password should be at least 8 characters.",
     passwordMismatch: "Passwords do not match.",
     genericError: "Unable to authenticate. Please try again.",
+    methodDisabled:
+      "This sign-in method isn't enabled. Enable Email/Password (and Google) in Firebase → Authentication.",
+    networkError: "Network error — check your connection and try again.",
+    popupClosed: "Sign-in was cancelled.",
+    serverNotConfigured:
+      "The server isn't fully configured yet (Firebase Admin key missing). Add the env vars on your host and redeploy.",
     welcome: "Welcome",
   },
 

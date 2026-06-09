@@ -208,6 +208,12 @@ export const ar: Dictionary = {
     weakPassword: "يجب ألا تقل كلمة المرور عن 8 أحرف.",
     passwordMismatch: "كلمتا المرور غير متطابقتين.",
     genericError: "تعذّر تسجيل الدخول. حاول مرة أخرى.",
+    methodDisabled:
+      "طريقة الدخول هذه غير مفعّلة. فعّل البريد/كلمة المرور (وGoogle) في Firebase ← Authentication.",
+    networkError: "خطأ في الشبكة — تحقق من اتصالك وحاول مرة أخرى.",
+    popupClosed: "تم إلغاء تسجيل الدخول.",
+    serverNotConfigured:
+      "الخادم غير مكتمل الإعداد (مفتاح Firebase Admin مفقود). أضف متغيّرات البيئة على الاستضافة وأعد النشر.",
     welcome: "أهلًا",
   },
 

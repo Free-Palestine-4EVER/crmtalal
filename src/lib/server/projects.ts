@@ -139,6 +139,7 @@ export type CreateProjectInput = {
   priority?: Priority;
   documents?: IncomingDoc[];
   clientCompany?: string;
+  leadId?: string;
 };
 
 export async function createProject(actor: Actor, input: CreateProjectInput) {
