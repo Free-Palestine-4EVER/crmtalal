@@ -12,9 +12,9 @@ export function Hero3D() {
     <ModelStage
       src={MODEL_URL}
       fit={6.8}
-      distance={5.6}
+      distance={10}
       spin={0.3}
-      lift={0.2}
+      lift={0}
       scrollSpin={Math.PI * 1.7}
       className="!absolute inset-0"
     />
