@@ -14,6 +14,11 @@ const APP_ID =
   process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID ||
   "5122e60f-dd49-41b1-81e7-66b6117a8383";
 
+// Safari Web Push ID from the OneSignal dashboard (enables Safari push).
+const SAFARI_WEB_ID =
+  process.env.NEXT_PUBLIC_ONESIGNAL_SAFARI_WEB_ID ||
+  "web.onesignal.auto.4a2f472e-2de1-469e-8f55-0b3384f6ae6c";
+
 type OneSignalContextValue = {
   ready: boolean;
   enabled: boolean;
@@ -46,7 +51,10 @@ export function OneSignalProvider({ children }: { children: React.ReactNode }) {
     initStarted = true;
     OneSignal.init({
       appId: APP_ID,
+      safari_web_id: SAFARI_WEB_ID,
       allowLocalhostAsSecureOrigin: true,
+      // OneSignal's floating subscription bell is left off (default) — we use
+      // our own in-app bell + "Enable notifications" control instead.
     })
       .then(() => {
         setReady(true);
