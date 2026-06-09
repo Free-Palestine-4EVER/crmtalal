@@ -474,15 +474,47 @@ export async function sendMessage(actor: Actor, id: string, text: string) {
     .collection(COL.projects)
     .doc(id)
     .update({ updatedAt: FieldValue.serverTimestamp() });
-  const recipients = await withAdmins([p.clientId, p.assignedTo], actor.uid);
-  await notifyUsers(recipients, {
+  // The direct conversation counterpart is emailed (Resend); admins get a
+  // silent in-app/push oversight copy (no email-per-message spam).
+  const isClientActor = actor.uid === p.clientId;
+  const admins = await getAdminUids();
+  let direct: string[];
+  let oversight: string[];
+  if (isClientActor) {
+    direct = p.assignedTo ? [p.assignedTo] : admins;
+    oversight = p.assignedTo ? admins : [];
+  } else {
+    direct = [p.clientId];
+    oversight = admins;
+  }
+  direct = Array.from(new Set(direct)).filter((u) => u && u !== actor.uid);
+  oversight = Array.from(new Set(oversight)).filter(
+    (u) => u && u !== actor.uid && !direct.includes(u),
+  );
+
+  const messageBody = locEvent((d) => d.events.newMessage, {
+    code: p.code,
+    name: actor.name,
+  });
+  await notifyUsers(direct, {
     type: "message",
     title: NOTIF_TITLE.message,
-    body: locEvent((d) => d.events.newMessage, { code: p.code }),
+    body: messageBody,
     projectId: id,
     projectCode: p.code,
     link: `/requests/${id}`,
-    email: false,
+    email: true,
   });
+  if (oversight.length) {
+    await notifyUsers(oversight, {
+      type: "message",
+      title: NOTIF_TITLE.message,
+      body: messageBody,
+      projectId: id,
+      projectCode: p.code,
+      link: `/requests/${id}`,
+      email: false,
+    });
+  }
   return { ok: true };
 }

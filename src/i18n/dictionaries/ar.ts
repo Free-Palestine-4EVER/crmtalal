@@ -472,7 +472,8 @@ export const ar: Dictionary = {
     statusChanged: "الطلب {code} أصبح «{status}»",
     reportReady: "تقرير الطلب {code} جاهز للتنزيل",
     completed: "اكتمل الطلب {code} — خطاب الإنجاز متاح",
-    newMessage: "رسالة جديدة على الطلب {code}",
+    newMessage:
+      "لديك رسالة جديدة من {name} بخصوص الطلب {code} — افتح المنصة للقراءة والرد.",
     documentUploaded: "تم رفع مستند جديد إلى {code}",
     newClient: "تسجيل عميل جديد: {name}",
     feeSet: "تم تحديد أتعاب الخدمة للطلب {code}",

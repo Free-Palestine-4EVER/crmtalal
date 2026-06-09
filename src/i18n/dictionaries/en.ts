@@ -474,7 +474,8 @@ export const en = {
     statusChanged: "Request {code} is now “{status}”",
     reportReady: "The report for {code} is ready to download",
     completed: "Request {code} is complete — certificate available",
-    newMessage: "New message on request {code}",
+    newMessage:
+      "You have a new message from {name} on request {code} — open the platform to read and reply.",
     documentUploaded: "New document uploaded to {code}",
     newClient: "New client registered: {name}",
     feeSet: "A service fee was set for request {code}",
