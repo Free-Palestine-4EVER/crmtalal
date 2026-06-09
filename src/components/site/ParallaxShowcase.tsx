@@ -4,6 +4,7 @@ import { useRef } from "react";
 import {
   motion,
   useScroll,
+  useSpring,
   useTransform,
   useReducedMotion,
 } from "framer-motion";
@@ -48,20 +49,22 @@ export function ParallaxShowcase({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-10%", "10%"]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1.08, 1.02, 1.08]);
+  // buttery: spring-smoothed progress, deep travel, fixed overscan (no wobble)
+  const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.4 });
+  const y = useTransform(smooth, [0, 1], reduce ? ["0%", "0%"] : ["-18%", "18%"]);
+  const textY = useTransform(smooth, [0.4, 1], reduce ? ["0%", "0%"] : ["0%", "55%"]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[88svh] items-end overflow-hidden"
+      className="relative isolate flex min-h-[92svh] items-end overflow-hidden"
       style={{ background: fallback }}
     >
       {/* parallax photo layer */}
       <motion.div
         aria-hidden
-        style={{ y, scale, backgroundImage: `url("${image}")` }}
-        className="pointer-events-none absolute inset-[-10%] bg-cover bg-center"
+        style={{ y, backgroundImage: `url("${image}")` }}
+        className="pointer-events-none absolute inset-[-18%] scale-105 bg-cover bg-center will-change-transform"
       />
       {/* film grade */}
       <div
@@ -76,7 +79,10 @@ export function ParallaxShowcase({
       <div className="grain pointer-events-none absolute inset-0" />
 
       {!bare && (
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-14 sm:px-8 sm:pb-20">
+        <motion.div
+          style={{ y: textY }}
+          className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-14 sm:px-8 sm:pb-20"
+        >
           {/* kicker rule */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -122,7 +128,7 @@ export function ParallaxShowcase({
               {L(sub)}
             </motion.p>
           )}
-        </div>
+        </motion.div>
       )}
     </section>
   );

@@ -29,7 +29,7 @@ const SUGGESTIONS: { ar: string; en: string }[] = [
 ];
 
 const inputClass =
-  "w-full rounded-xl border border-[#e7ddca] bg-[#faf7f0] px-4 h-12 text-ink-900 placeholder:text-ink-500 outline-none transition-colors focus:border-gold-600 focus:bg-white focus:ring-2 focus:ring-gold-600/20";
+  "w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 h-12 text-cream-50 placeholder:text-cream-100/40 outline-none backdrop-blur-sm transition-colors focus:border-gold-400/70 focus:bg-white/[0.12] focus:ring-2 focus:ring-gold-400/20";
 
 export function QuickRequest() {
   const { dict: d, locale, L } = useI18n();
@@ -142,7 +142,7 @@ export function QuickRequest() {
   };
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-[#ece3d2] bg-white p-6 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-gold-500/25 sm:p-7">
+    <div className="w-full max-w-md rounded-3xl border border-white/15 bg-white/[0.08] p-6 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.75)] ring-1 ring-white/10 backdrop-blur-2xl sm:p-7">
       <AnimatePresence mode="wait">
         {step === "form" ? (
           <motion.form
@@ -154,10 +154,10 @@ export function QuickRequest() {
             className="space-y-4"
           >
             <div>
-              <h3 className="font-display text-xl font-semibold text-ink-900">
+              <h3 className="font-display text-xl font-semibold text-cream-50">
                 {ar ? "اطلب تقييمك العقاري" : "Request your valuation"}
               </h3>
-              <p className="mt-1 text-sm text-ink-500">
+              <p className="mt-1 text-sm text-cream-100/55">
                 {ar
                   ? "أرسل طلبك الآن — يصلنا فورًا ونتواصل معك."
                   : "Send your request now — it reaches us instantly and we'll be in touch."}
@@ -214,7 +214,7 @@ export function QuickRequest() {
                         "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
                         active
                           ? "border-maroon-600 bg-maroon-600 text-white"
-                          : "border-[#e7ddca] text-ink-700 hover:border-gold-600",
+                          : "border-white/20 text-cream-100/85 hover:border-gold-400",
                       )}
                     >
                       {label}
@@ -232,7 +232,7 @@ export function QuickRequest() {
               {busy ? d.common.submitting : ar ? "إرسال الطلب" : "Send request"}
               {!busy && <ArrowRight className="h-4 w-4 rtl:rotate-180" />}
             </button>
-            <p className="text-center text-[0.7rem] text-ink-500">
+            <p className="text-center text-[0.7rem] text-cream-100/55">
               {ar
                 ? "بالإرسال توافق على الشروط وسياسة الخصوصية."
                 : "By sending you agree to our terms & privacy policy."}
@@ -255,21 +255,21 @@ export function QuickRequest() {
               >
                 <CheckCircle2 className="h-8 w-8" />
               </motion.span>
-              <h3 className="mt-4 font-display text-xl font-semibold text-ink-900">
+              <h3 className="mt-4 font-display text-xl font-semibold text-cream-50">
                 {ar ? "تم إرسال طلبك ✓" : "Your request is sent ✓"}
               </h3>
-              <p className="mt-1.5 text-sm text-ink-500">
+              <p className="mt-1.5 text-sm text-cream-100/55">
                 {ar
                   ? `وصلنا طلبك وأرسلنا تأكيدًا إلى ${form.email}. سيتواصل معك فريقنا قريبًا.`
                   : `We've received it and sent a confirmation to ${form.email}. Our team will contact you shortly.`}
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#ece3d2] bg-[#faf7f0] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+            <div className="rounded-xl border border-white/10 bg-white/[0.06] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-cream-100/55">
                 {ar ? "اختياري" : "Optional"}
               </p>
-              <p className="mt-1 text-sm text-ink-700">
+              <p className="mt-1 text-sm text-cream-100/85">
                 {ar
                   ? "أنشئ حسابًا لمتابعة كل مرحلة من تقييمك واستلام تقريرك إلكترونيًا."
                   : "Create an account to track every stage and receive your report online."}
@@ -279,7 +279,7 @@ export function QuickRequest() {
                 type="button"
                 onClick={withGoogle}
                 disabled={busy}
-                className="mt-3 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-[#e2d8c4] bg-white font-medium text-ink-900 transition-colors hover:bg-white/60 disabled:opacity-60"
+                className="mt-3 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-white/20 bg-white/10 font-medium text-cream-50 transition-colors hover:bg-white/20 disabled:opacity-60"
               >
                 <GoogleGlyph />
                 {d.auth.googleSignIn}
@@ -311,13 +311,13 @@ export function QuickRequest() {
                 setForm({ name: "", phone: "", email: "", propertyType: "" });
                 setPassword("");
               }}
-              className="flex w-full items-center justify-center gap-2 text-sm font-medium text-ink-500 transition-colors hover:text-maroon-600"
+              className="flex w-full items-center justify-center gap-2 text-sm font-medium text-cream-100/55 transition-colors hover:text-maroon-600"
             >
               <PhoneCall className="h-4 w-4" />
               {ar ? "إرسال طلب آخر" : "Send another request"}
             </button>
 
-            <p className="flex items-center justify-center gap-1.5 text-center text-[0.7rem] text-ink-500">
+            <p className="flex items-center justify-center gap-1.5 text-center text-[0.7rem] text-cream-100/55">
               <ShieldCheck className="h-3.5 w-3.5 text-gold-700" />
               {ar ? "بياناتك محمية وسرّية تمامًا." : "Your information is private & secure."}
             </p>

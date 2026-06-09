@@ -12,7 +12,6 @@ import { ContactStrip } from "@/components/site/sections/ContactStrip";
 import { CtaBand } from "@/components/site/sections/CtaBand";
 import { PenSignature } from "@/components/site/sections/PenSignature";
 import { ParallaxShowcase } from "@/components/site/ParallaxShowcase";
-import { WordBand } from "@/components/site/WordBand";
 
 export default function Home() {
   return (
@@ -20,7 +19,6 @@ export default function Home() {
       <SiteNav />
       <main>
         <Hero />
-        <WordBand />
         <PartnersMarquee />
         <Services />
 

@@ -24,6 +24,10 @@ const Hero3D = dynamic(
   () => import("@/components/site/Hero3D").then((m) => m.Hero3D),
   { ssr: false },
 );
+const Ribbon3D = dynamic(
+  () => import("@/components/site/Ribbon3D").then((m) => m.Ribbon3D),
+  { ssr: false },
+);
 
 function RevealHeadline({ title, accent }: { title: string; accent: string }) {
   const reduce = useReducedMotion();
@@ -102,6 +106,17 @@ export function Hero() {
             className="absolute -end-2 top-24 hidden xl:block"
           >
             <CircularBadge />
+          </motion.div>
+
+          {/* the 3D ribbon mark, drifting beside the copy */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 1.3 }}
+            aria-hidden
+            className="pointer-events-none absolute -end-6 top-64 hidden h-56 w-56 xl:block"
+          >
+            <Ribbon3D />
           </motion.div>
 
           <motion.span
@@ -210,7 +225,7 @@ export function Hero() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, rgba(10,11,14,0.55) 0%, rgba(42,7,18,0.35) 45%, rgba(10,11,14,0.78) 100%)",
+                "linear-gradient(180deg, rgba(10,11,14,0.4) 0%, rgba(42,7,18,0.22) 45%, rgba(10,11,14,0.66) 100%)",
             }}
           />
           {/* gold heartbeat glow behind the model */}

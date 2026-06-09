@@ -1,30 +1,39 @@
 import {
-  Inter,
-  IBM_Plex_Sans_Arabic,
-  Cormorant_Garamond,
+  Outfit,
+  Almarai,
+  Reem_Kufi,
+  Marcellus,
   IBM_Plex_Mono,
 } from "next/font/google";
 
-/** Latin UI / body */
-export const inter = Inter({
+/** Latin UI / body — geometric, contemporary */
+export const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-inter", // keep historical var name so the whole app picks it up
   display: "swap",
 });
 
-/** Arabic — clean, professional, matches the company profile */
-export const plexArabic = IBM_Plex_Sans_Arabic({
+/** Arabic body — Almarai: clean, premium, beautifully light at large sizes */
+export const almarai = Almarai({
   subsets: ["arabic"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-plex-ar",
+  weight: ["300", "400", "700", "800"],
+  variable: "--font-plex-ar", // keep historical var name
   display: "swap",
 });
 
-/** Latin display serif — editorial, premium (marketing headings) */
-export const cormorant = Cormorant_Garamond({
+/** Arabic display — Reem Kufi: geometric Kufi, the Saudi-modern brand voice */
+export const reemKufi = Reem_Kufi({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display-ar",
+  display: "swap",
+});
+
+/** Latin display — Marcellus: single-weight Roman serif, quiet luxury */
+export const marcellus = Marcellus({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-cormorant",
+  weight: "400",
+  variable: "--font-cormorant", // keep historical var name
   display: "swap",
 });
 
@@ -37,8 +46,9 @@ export const plexMono = IBM_Plex_Mono({
 });
 
 export const fontVariables = [
-  inter.variable,
-  plexArabic.variable,
-  cormorant.variable,
+  outfit.variable,
+  almarai.variable,
+  reemKufi.variable,
+  marcellus.variable,
   plexMono.variable,
 ].join(" ");
