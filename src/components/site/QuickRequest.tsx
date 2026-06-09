@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
-import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, ShieldCheck, PhoneCall } from "lucide-react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -37,18 +37,19 @@ export function QuickRequest() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const [step, setStep] = useState<"form" | "account">("form");
+  const [step, setStep] = useState<"form" | "sent">("form");
   const [busy, setBusy] = useState(false);
   const [leadId, setLeadId] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", phone: "", propertyType: "" });
-  const [email, setEmail] = useState("");
+  const [form, setForm] = useState({ name: "", phone: "", email: "", propertyType: "" });
   const [password, setPassword] = useState("");
 
   const set = (k: keyof typeof form, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  /** Create the tracked valuation request, then go to it. */
-  const createRequest = async () => {
+  const emailValid = /\S+@\S+\.\S+/.test(form.email.trim());
+
+  /** OPTIONAL: after the request is already sent, link it to a tracked account. */
+  const createTrackedRequest = async () => {
     await apiFetch("/api/auth/register", {
       body: { name: form.name, phone: form.phone, locale },
     });
@@ -64,10 +65,15 @@ export function QuickRequest() {
     router.push(`/requests/${res.id}`);
   };
 
+  /** Pressing "Send request" sends the request immediately — no account needed. */
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.phone.trim()) {
       toast.error(d.common.required);
+      return;
+    }
+    if (!emailValid) {
+      toast.error(ar ? "أدخل بريدًا إلكترونيًا صحيحًا" : "Enter a valid email address");
       return;
     }
     setBusy(true);
@@ -76,15 +82,18 @@ export function QuickRequest() {
         body: {
           name: form.name,
           phone: form.phone,
+          email: form.email,
           propertyType: form.propertyType,
         },
       });
       setLeadId(res.id);
+      // Logged-in clients go straight to a tracked request; everyone else
+      // sees an instant confirmation — the request is ALREADY sent.
       if (user) {
-        await createRequest();
+        await createTrackedRequest();
         return;
       }
-      setStep("account");
+      setStep("sent");
     } catch {
       toast.error(d.common.error);
     } finally {
@@ -96,7 +105,7 @@ export function QuickRequest() {
     setBusy(true);
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
-      await createRequest();
+      await createTrackedRequest();
     } catch (err) {
       toast.error(describeAuthError(err, d));
       setBusy(false);
@@ -111,16 +120,15 @@ export function QuickRequest() {
     }
     setBusy(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, form.email, password);
       await updateProfile(cred.user, { displayName: form.name });
-      await createRequest();
+      await createTrackedRequest();
     } catch (err) {
       const code = (err as { code?: string })?.code;
-      // Existing account → sign them in with the same credentials and proceed.
       if (code === "auth/email-already-in-use") {
         try {
-          await signInWithEmailAndPassword(auth, email, password);
-          await createRequest();
+          await signInWithEmailAndPassword(auth, form.email, password);
+          await createTrackedRequest();
           return;
         } catch (signInErr) {
           toast.error(describeAuthError(signInErr, d));
@@ -151,8 +159,8 @@ export function QuickRequest() {
               </h3>
               <p className="mt-1 text-sm text-ink-500">
                 {ar
-                  ? "أدخل بياناتك وسنتواصل معك — أو تابع طلبك مباشرة."
-                  : "Tell us about it — we'll handle the rest."}
+                  ? "أرسل طلبك الآن — يصلنا فورًا ونتواصل معك."
+                  : "Send your request now — it reaches us instantly and we'll be in touch."}
               </p>
             </div>
 
@@ -162,6 +170,16 @@ export function QuickRequest() {
               value={form.name}
               onChange={(e) => set("name", e.target.value)}
               autoComplete="name"
+            />
+            <input
+              className={inputClass}
+              type="email"
+              placeholder={d.contact.formEmail}
+              value={form.email}
+              onChange={(e) => set("email", e.target.value)}
+              dir="ltr"
+              inputMode="email"
+              autoComplete="email"
             />
             <input
               className={inputClass}
@@ -211,11 +229,7 @@ export function QuickRequest() {
               disabled={busy}
               className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-maroon-600 font-semibold text-cream-50 transition-colors hover:bg-maroon-700 disabled:opacity-60"
             >
-              {busy
-                ? d.common.submitting
-                : ar
-                  ? "إرسال الطلب"
-                  : "Send request"}
+              {busy ? d.common.submitting : ar ? "إرسال الطلب" : "Send request"}
               {!busy && <ArrowRight className="h-4 w-4 rtl:rotate-180" />}
             </button>
             <p className="text-center text-[0.7rem] text-ink-500">
@@ -226,72 +240,86 @@ export function QuickRequest() {
           </motion.form>
         ) : (
           <motion.div
-            key="account"
+            key="sent"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="space-y-4"
+            className="space-y-5"
           >
-            <div className="flex items-start gap-3 rounded-xl border border-positive/30 bg-positive/10 p-3">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-positive" />
-              <p className="text-sm text-ink-700">
+            <div className="flex flex-col items-center text-center">
+              <motion.span
+                initial={{ scale: 0.4, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="grid h-14 w-14 place-items-center rounded-full bg-positive/12 text-positive"
+              >
+                <CheckCircle2 className="h-8 w-8" />
+              </motion.span>
+              <h3 className="mt-4 font-display text-xl font-semibold text-ink-900">
+                {ar ? "تم إرسال طلبك ✓" : "Your request is sent ✓"}
+              </h3>
+              <p className="mt-1.5 text-sm text-ink-500">
                 {ar
-                  ? "تم استلام طلبك! أنشئ حسابك في خطوة واحدة لمتابعة كل مرحلة واستلام تقريرك."
-                  : "Request received! Create your account in one step to track every stage and get your report."}
+                  ? `وصلنا طلبك وأرسلنا تأكيدًا إلى ${form.email}. سيتواصل معك فريقنا قريبًا.`
+                  : `We've received it and sent a confirmation to ${form.email}. Our team will contact you shortly.`}
               </p>
+            </div>
+
+            <div className="rounded-xl border border-[#ece3d2] bg-[#faf7f0] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+                {ar ? "اختياري" : "Optional"}
+              </p>
+              <p className="mt-1 text-sm text-ink-700">
+                {ar
+                  ? "أنشئ حسابًا لمتابعة كل مرحلة من تقييمك واستلام تقريرك إلكترونيًا."
+                  : "Create an account to track every stage and receive your report online."}
+              </p>
+
+              <button
+                type="button"
+                onClick={withGoogle}
+                disabled={busy}
+                className="mt-3 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-[#e2d8c4] bg-white font-medium text-ink-900 transition-colors hover:bg-white/60 disabled:opacity-60"
+              >
+                <GoogleGlyph />
+                {d.auth.googleSignIn}
+              </button>
+
+              <form onSubmit={withEmail} className="mt-3 space-y-3">
+                <input
+                  className={inputClass}
+                  type="password"
+                  placeholder={`${d.auth.password} (${ar ? "8 أحرف على الأقل" : "8+ chars"})`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  dir="ltr"
+                />
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-gold-500 to-gold-600 font-semibold text-ink-950 transition-colors hover:from-gold-400 hover:to-gold-500 disabled:opacity-60"
+                >
+                  {busy ? d.auth.creatingAccount : d.auth.createAccount}
+                </button>
+              </form>
             </div>
 
             <button
               type="button"
-              onClick={withGoogle}
-              disabled={busy}
-              className="flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-[#e2d8c4] bg-white font-medium text-ink-900 transition-colors hover:bg-[#faf7f0] disabled:opacity-60"
+              onClick={() => {
+                setStep("form");
+                setForm({ name: "", phone: "", email: "", propertyType: "" });
+                setPassword("");
+              }}
+              className="flex w-full items-center justify-center gap-2 text-sm font-medium text-ink-500 transition-colors hover:text-maroon-600"
             >
-              <GoogleGlyph />
-              {d.auth.googleSignIn}
+              <PhoneCall className="h-4 w-4" />
+              {ar ? "إرسال طلب آخر" : "Send another request"}
             </button>
-
-            <div className="flex items-center gap-3">
-              <span className="h-px flex-1 bg-[#ece3d2]" />
-              <span className="text-xs uppercase tracking-wider text-ink-500">
-                {d.auth.orContinue}
-              </span>
-              <span className="h-px flex-1 bg-[#ece3d2]" />
-            </div>
-
-            <form onSubmit={withEmail} className="space-y-3">
-              <input
-                className={inputClass}
-                type="email"
-                placeholder={d.auth.email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                dir="ltr"
-                required
-              />
-              <input
-                className={inputClass}
-                type="password"
-                placeholder={`${d.auth.password} (${ar ? "8 أحرف على الأقل" : "8+ chars"})`}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                dir="ltr"
-                required
-              />
-              <button
-                type="submit"
-                disabled={busy}
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-gold-500 to-gold-600 font-semibold text-ink-950 transition-colors hover:from-gold-400 hover:to-gold-500 disabled:opacity-60"
-              >
-                {busy ? d.auth.creatingAccount : d.auth.createAccount}
-              </button>
-            </form>
 
             <p className="flex items-center justify-center gap-1.5 text-center text-[0.7rem] text-ink-500">
               <ShieldCheck className="h-3.5 w-3.5 text-gold-700" />
-              {ar
-                ? "بياناتك محمية وسرّية تمامًا."
-                : "Your information is private & secure."}
+              {ar ? "بياناتك محمية وسرّية تمامًا." : "Your information is private & secure."}
             </p>
           </motion.div>
         )}

@@ -25,7 +25,7 @@ export function Standards() {
         <SectionHeading
           eyebrow={dict.sections.standardsEyebrow}
           title={dict.sections.standardsTitle}
-          index="04"
+          index="03"
         />
 
         <motion.div
