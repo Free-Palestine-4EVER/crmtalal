@@ -47,7 +47,7 @@ export function SegmentedControl<V extends string = string>({
             {active && (
               <motion.span
                 layoutId="segmented-active"
-                className="absolute inset-0 rounded-full bg-maroon-600 shadow-[0_8px_22px_-12px_rgba(114,20,47,0.9)] ring-1 ring-gold-500/30"
+                className="absolute inset-0 rounded-full bg-maroon-600 shadow-[0_8px_22px_-12px_rgba(127,24,54,0.9)] ring-1 ring-gold-500/30"
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               />
             )}

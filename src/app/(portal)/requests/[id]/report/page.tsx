@@ -27,9 +27,9 @@ import {
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
-const MAROON = "#72142F";
-const GOLD = "#b68a38";
-const GOLD_BRIGHT = "#c9a24c";
+const MAROON = "#7f1836";
+const GOLD = "#9a7527";
+const GOLD_BRIGHT = "#b48a32";
 const INK = "#1a1d24";
 const MUTED = "#6b7280";
 const RULE = "#e7e2da";
@@ -42,7 +42,7 @@ const INSPECTION_STATUS: Record<
   { dot: string; ar: string; en: string }
 > = {
   ok: { dot: "#1f9d55", ar: "جيد", en: "OK" },
-  fair: { dot: "#c9a24c", ar: "مقبول", en: "Fair" },
+  fair: { dot: "#b48a32", ar: "مقبول", en: "Fair" },
   poor: { dot: "#cf3b3b", ar: "ضعيف", en: "Poor" },
   na: { dot: "#9aa0a6", ar: "لا ينطبق", en: "N/A" },
 };

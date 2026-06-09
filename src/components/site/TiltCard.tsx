@@ -68,7 +68,7 @@ export function TiltCard({
         <motion.span
           aria-hidden
           style={{ left: sheenX, top: sheenY }}
-          className="pointer-events-none absolute h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-2xl transition-opacity duration-300 [background:radial-gradient(circle,rgba(201,162,76,0.22),transparent_70%)] group-hover/tilt:opacity-100"
+          className="pointer-events-none absolute h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-2xl transition-opacity duration-300 [background:radial-gradient(circle,rgba(180,138,50,0.22),transparent_70%)] group-hover/tilt:opacity-100"
         />
       )}
     </motion.div>

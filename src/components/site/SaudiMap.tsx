@@ -81,8 +81,8 @@ export function SaudiMap() {
           d={KSA_PATH}
           fill="url(#ksa-fill)"
           stroke="var(--s-gold)"
-          strokeOpacity={0.55}
-          strokeWidth={0.45}
+          strokeOpacity={0.75}
+          strokeWidth={0.5}
           strokeLinejoin="round"
           initial={reduce ? { opacity: 1 } : { pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 1 }}
@@ -117,27 +117,27 @@ export function SaudiMap() {
                 />
               )}
               <motion.circle
-                r={c.hq ? 1.15 : 0.8}
+                r={c.hq ? 1.25 : 0.95}
                 fill={c.hq || isActive ? "var(--s-gold)" : "var(--s-accent)"}
                 initial={reduce ? { scale: 1 } : { scale: 0 }}
                 whileInView={{ scale: isActive ? 1.45 : 1 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ delay: reduce ? 0 : 1 + i * 0.07, type: "spring", stiffness: 320, damping: 18 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ delay: reduce ? 0 : 0.35 + i * 0.05, type: "spring", stiffness: 320, damping: 18 }}
               />
               {/* city name label */}
               <motion.text
-                x={c.side === "end" ? 2 : -2}
-                y={(c.dy ?? 0) + 0.8}
+                x={c.side === "end" ? 2.2 : -2.2}
+                y={(c.dy ?? 0) + 0.9}
                 textAnchor={c.side === "end" ? "start" : "end"}
-                fontSize={2.3}
+                fontSize={2.9}
                 fontWeight={c.hq ? 700 : 500}
                 fill={c.hq || isActive ? "var(--s-gold)" : "var(--s-fg)"}
-                fillOpacity={c.hq || isActive ? 1 : 0.62}
+                fillOpacity={c.hq || isActive ? 1 : 0.78}
                 style={{ fontFamily: "var(--font-arabic)" }}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ delay: reduce ? 0 : 1.2 + i * 0.07, duration: 0.5 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ delay: reduce ? 0 : 0.5 + i * 0.05, duration: 0.5 }}
               >
                 {ar ? c.ar : c.en}
               </motion.text>

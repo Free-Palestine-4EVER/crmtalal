@@ -56,7 +56,7 @@ export function SectionHeading({
           {!centered && (
             <span
               aria-hidden
-              className="ms-auto hidden font-mono text-xs tracking-[0.2em] text-muted/50 sm:block"
+              className="ms-auto hidden font-mono text-xs tracking-[0.2em] text-muted opacity-50 sm:block"
             >
               EDARAH®
             </span>

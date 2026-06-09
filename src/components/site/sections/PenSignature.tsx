@@ -132,7 +132,7 @@ export function PenSignature() {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(60% 55% at 50% 45%, rgba(201,162,76,0.28), transparent 65%)",
+                "radial-gradient(60% 55% at 50% 45%, rgba(180,138,50,0.28), transparent 65%)",
             }}
           />
           <div className="absolute inset-0">

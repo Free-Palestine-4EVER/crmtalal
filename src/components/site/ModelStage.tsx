@@ -258,8 +258,8 @@ export function ModelStage({
           >
             <ambientLight intensity={1.0} />
             <directionalLight position={[4, 6, 5]} intensity={2.1} />
-            <directionalLight position={[-6, 2, -4]} intensity={1.0} color="#e7ce8e" />
-            <pointLight position={[0, -3, 4]} intensity={0.8} color="#72142f" />
+            <directionalLight position={[-6, 2, -4]} intensity={1.0} color="#e3c98a" />
+            <pointLight position={[0, -3, 4]} intensity={0.8} color="#7f1836" />
             <spotLight position={[0, 6, 2]} angle={0.5} penumbra={1} intensity={1.1} color="#fff3d6" />
             <Suspense fallback={null}>
               {/* procedural gold environment — metallic PBR materials need
@@ -277,20 +277,20 @@ export function ModelStage({
                   position={[-4, 1, -2]}
                   rotation-y={Math.PI / 2}
                   scale={[7, 3, 1]}
-                  color="#e7ce8e"
+                  color="#e3c98a"
                 />
                 <Lightformer
                   intensity={1.3}
                   position={[4, -1, 2]}
                   rotation-y={-Math.PI / 2}
                   scale={[7, 3, 1]}
-                  color="#c9a24c"
+                  color="#b48a32"
                 />
                 <Lightformer
                   intensity={0.9}
                   position={[0, -3, -3]}
                   scale={[9, 3, 1]}
-                  color="#72142f"
+                  color="#7f1836"
                 />
                 {/* wrap-around fill so no facing angle ever goes black */}
                 <Lightformer
@@ -298,7 +298,7 @@ export function ModelStage({
                   position={[0, 1, -5]}
                   rotation-y={Math.PI}
                   scale={[10, 6, 1]}
-                  color="#d9bc79"
+                  color="#d1ab5c"
                 />
                 <Lightformer
                   intensity={1.2}
@@ -326,7 +326,7 @@ export function ModelStage({
                   scale={fit * 2.2}
                   blur={2.6}
                   far={fit}
-                  color="#2a0712"
+                  color="#2c0813"
                 />
               )}
             </Suspense>

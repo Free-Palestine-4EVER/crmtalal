@@ -9,9 +9,9 @@ import { cn } from "@/lib/cn";
 
 /* ---- Palette (matches globals.css tokens) ---- */
 export const CHART = {
-  gold: "#c9a24c",
-  maroon: "#72142f",
-  maroonLight: "#8a2442",
+  gold: "#b48a32",
+  maroon: "#7f1836",
+  maroonLight: "#962547",
   steel: "#5f7689",
   positive: "#4e9f6b",
   info: "#5f8db0",

@@ -129,7 +129,7 @@ export default function NotificationsPage() {
                     "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full",
                     n.read
                       ? "bg-ink-600"
-                      : "bg-gold-500 shadow-[0_0_0_4px_rgba(201,162,76,0.15)]",
+                      : "bg-gold-500 shadow-[0_0_0_4px_rgba(180,138,50,0.15)]",
                   )}
                   aria-hidden
                 />

@@ -23,7 +23,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     cn(
       "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
       active
-        ? "bg-maroon-600/20 text-gold-200 shadow-[inset_0_0_0_1px_rgba(201,162,76,0.18)]"
+        ? "bg-maroon-600/20 text-gold-200 shadow-[inset_0_0_0_1px_rgba(180,138,50,0.18)]"
         : "text-cream-100/65 hover:bg-ink-800/60 hover:text-white",
     );
 

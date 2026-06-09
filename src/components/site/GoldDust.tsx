@@ -20,7 +20,7 @@ export function GoldDust({ className }: { className?: string }) {
       {MOTES.map((m, i) => (
         <span
           key={i}
-          className="dust absolute rounded-full bg-[#e7ce8e] blur-[1px]"
+          className="dust absolute rounded-full bg-[#e3c98a] blur-[1px]"
           style={{
             left: m.left,
             top: m.top,

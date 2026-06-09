@@ -60,7 +60,7 @@ export function ContactStrip() {
           {items.map((it, i) => {
             const Icon = it.icon;
             const inner = (
-              <div className="group relative flex h-full items-start gap-4 overflow-hidden rounded-2xl border border-line bg-scard p-6 shadow-[0_14px_44px_-30px_rgba(114,20,47,0.3)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--s-gold)]/45 hover:shadow-[0_20px_54px_-30px_var(--s-glow)]">
+              <div className="group relative flex h-full items-start gap-4 overflow-hidden rounded-2xl border border-line bg-scard p-6 shadow-[0_14px_44px_-30px_rgba(127,24,54,0.3)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--s-gold)]/45 hover:shadow-[0_20px_54px_-30px_var(--s-glow)]">
                 {/* gold glow wash on hover */}
                 <span className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[radial-gradient(70%_100%_at_50%_0%,var(--s-glow),transparent_72%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--s-gold)]/12 text-sgold ring-1 ring-[var(--s-gold)]/15 transition-transform duration-300 group-hover:scale-105">

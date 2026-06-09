@@ -8,10 +8,19 @@ const ModelStage = dynamic(
 );
 
 /** The 3D ribbon mark as a floating chapter ornament — framed to fit fully,
- *  spinning with scroll. */
+ *  spinning with scroll, with a dark halo so it reads on any backdrop. */
 export function ChapterOrnament() {
   return (
     <div className="relative h-full w-full">
+      {/* contrast halo — keeps the gold mark legible over bright imagery */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(50% 50% at 50% 50%, rgba(20,8,12,0.55), transparent 72%)",
+        }}
+      />
       <ModelStage
         src="/models/hero-ribbon-opt.glb"
         fit={3.2}

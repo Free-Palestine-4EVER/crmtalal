@@ -14,8 +14,8 @@ const SRC = {
 type Tone = keyof typeof SRC;
 
 // Intrinsic ratio of the official wordmark.
-const LOGO_W = 1505;
-const LOGO_H = 1623;
+const LOGO_W = 900;
+const LOGO_H = 693;
 
 export function LogoMark({
   tone = "official",

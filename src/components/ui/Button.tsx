@@ -18,7 +18,7 @@ const base =
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] select-none";
 
 const variants: Record<Variant, string> = {
-  gold: "bg-gradient-to-b from-gold-400 to-gold-600 text-ink-950 shadow-[0_10px_30px_-12px_rgba(201,162,76,0.7)] hover:from-gold-300 hover:to-gold-500",
+  gold: "bg-gradient-to-b from-gold-400 to-gold-600 text-ink-950 shadow-[0_10px_30px_-12px_rgba(180,138,50,0.7)] hover:from-gold-300 hover:to-gold-500",
   primary:
     "bg-parch-50 text-ink-900 hover:bg-white shadow-[0_10px_30px_-14px_rgba(255,255,255,0.5)]",
   outline:

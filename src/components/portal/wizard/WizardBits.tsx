@@ -29,7 +29,7 @@ export function Stepper({
         {/* base line — uses inset-inline so it flips for RTL automatically */}
         <div className="absolute inset-x-5 top-5 h-px bg-ink-700/70" aria-hidden />
         <motion.div
-          className="absolute start-5 top-5 h-px origin-[inset-inline-start] bg-gradient-to-r from-gold-500 to-gold-400 shadow-[0_0_12px_rgba(201,162,76,0.5)]"
+          className="absolute start-5 top-5 h-px origin-[inset-inline-start] bg-gradient-to-r from-gold-500 to-gold-400 shadow-[0_0_12px_rgba(180,138,50,0.5)]"
           aria-hidden
           initial={false}
           animate={{ width: `calc(${pct}% - ${pct === 0 ? 0 : 40}px)` }}
@@ -56,7 +56,7 @@ export function Stepper({
                     "relative grid h-10 w-10 place-items-center rounded-full border text-sm font-semibold transition-colors duration-300",
                     reachable && onJump && "cursor-pointer",
                     active &&
-                      "border-gold-500 bg-gold-500/15 text-gold-300 shadow-[0_0_0_4px_rgba(201,162,76,0.12)]",
+                      "border-gold-500 bg-gold-500/15 text-gold-300 shadow-[0_0_0_4px_rgba(180,138,50,0.12)]",
                     done &&
                       "border-gold-500/60 bg-gold-500 text-ink-950",
                     !active &&
@@ -122,7 +122,7 @@ export function SelectCard({
       className={cn(
         "group relative flex flex-col items-center gap-2.5 rounded-2xl border p-4 text-center transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]",
         selected
-          ? "border-gold-500/70 bg-maroon-600/15 ring-2 ring-gold-500/40 shadow-[0_8px_30px_-14px_rgba(201,162,76,0.6)]"
+          ? "border-gold-500/70 bg-maroon-600/15 ring-2 ring-gold-500/40 shadow-[0_8px_30px_-14px_rgba(180,138,50,0.6)]"
           : "border-ink-700 bg-ink-850/50 hover:border-gold-500/40 hover:bg-ink-800/60",
       )}
     >

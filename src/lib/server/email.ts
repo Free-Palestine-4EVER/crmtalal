@@ -59,7 +59,7 @@ export function emailLayout(opts: {
     : "Automated message from the Edarah platform.";
   const cta =
     opts.ctaLabel && opts.ctaUrl
-      ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:8px;"><tr><td style="border-radius:999px;background:linear-gradient(180deg,#d9bc79,#b68a38);">
+      ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:8px;"><tr><td style="border-radius:999px;background:linear-gradient(180deg,#d1ab5c,#9a7527);">
            <a href="${abs(opts.ctaUrl)}" style="display:inline-block;padding:13px 32px;color:#0a0b0e;font-weight:700;font-size:14px;text-decoration:none;border-radius:999px;">${opts.ctaLabel}</a>
          </td></tr></table>`
       : "";
@@ -70,7 +70,7 @@ export function emailLayout(opts: {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0c0d10;padding:28px 12px;">
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#16181f;border-radius:18px;overflow:hidden;border:1px solid #272c39;">
-        <tr><td dir="${dir}" style="background:linear-gradient(135deg,#72142f,#3a0a19);padding:26px 32px;text-align:${align};">
+        <tr><td dir="${dir}" style="background:linear-gradient(135deg,#7f1836,#3d0c1c);padding:26px 32px;text-align:${align};">
           <img src="${SITE_URL}/icons/icon-192.png" width="44" height="44" alt="Edarah" style="border-radius:11px;vertical-align:middle;">
           <span style="color:#f9f4ec;font-size:17px;font-weight:700;vertical-align:middle;padding:0 12px;">${brand}</span>
         </td></tr>

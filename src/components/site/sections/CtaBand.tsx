@@ -23,7 +23,7 @@ export function CtaBand() {
 
   return (
     <section className="relative px-5 py-20 sm:px-8 sm:py-24">
-      <div className="bg-brand bg-grain relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-maroon-600/40 px-6 py-20 text-center shadow-[0_40px_120px_-50px_rgba(114,20,47,0.7)] sm:px-12 sm:py-24">
+      <div className="bg-brand bg-grain relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-maroon-600/40 px-6 py-20 text-center shadow-[0_40px_120px_-50px_rgba(127,24,54,0.7)] sm:px-12 sm:py-24">
         <TopoPattern className="text-gold-500" opacity={0.14} />
 
         {/* gold hairline along the top edge */}
@@ -78,7 +78,7 @@ export function CtaBand() {
                   href="/register"
                   variant="gold"
                   size="lg"
-                  className="group shadow-[0_18px_50px_-18px_rgba(201,162,76,0.7)]"
+                  className="group shadow-[0_18px_50px_-18px_rgba(180,138,50,0.7)]"
                 >
                   {dict.cta.button}
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:rotate-[-90deg]" />

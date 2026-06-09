@@ -26,6 +26,7 @@ export function PWA() {
         .catch(() => {});
     }
 
+    let delay: ReturnType<typeof setTimeout> | null = null;
     const onPrompt = (e: Event) => {
       e.preventDefault();
       let dismissed = false;
@@ -36,10 +37,14 @@ export function PWA() {
       }
       if (dismissed) return;
       setDeferred(e as BeforeInstallPromptEvent);
-      setShow(true);
+      // let the visitor experience the site first — offer the app later
+      delay = setTimeout(() => setShow(true), 25_000);
     };
     window.addEventListener("beforeinstallprompt", onPrompt);
-    return () => window.removeEventListener("beforeinstallprompt", onPrompt);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onPrompt);
+      if (delay) clearTimeout(delay);
+    };
   }, []);
 
   const install = async () => {

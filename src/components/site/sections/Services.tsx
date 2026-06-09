@@ -13,23 +13,23 @@ import { cn } from "@/lib/cn";
 const CARD_ART: Record<string, { img: string; fallback: string }> = {
   land: {
     img: "/images/services/land.jpg",
-    fallback: "linear-gradient(150deg,#3a2c14,#72142f 80%)",
+    fallback: "linear-gradient(150deg,#3a2c14,#7f1836 80%)",
   },
   residential: {
     img: "/images/services/residential.jpg",
-    fallback: "linear-gradient(150deg,#4e3b1d,#2a0712 80%)",
+    fallback: "linear-gradient(150deg,#4e3b1d,#2c0813 80%)",
   },
   commercial: {
     img: "/images/services/commercial.jpg",
-    fallback: "linear-gradient(150deg,#14161d,#5e1228 85%)",
+    fallback: "linear-gradient(150deg,#14161d,#67142e 85%)",
   },
   undeveloped: {
     img: "/images/services/raw.jpg",
-    fallback: "linear-gradient(150deg,#6f541f,#14161d 80%)",
+    fallback: "linear-gradient(150deg,#5e4617,#14161d 80%)",
   },
   projects: {
     img: "/images/services/projects.jpg",
-    fallback: "linear-gradient(150deg,#191c25,#72142f 85%)",
+    fallback: "linear-gradient(150deg,#191c25,#7f1836 85%)",
   },
 };
 

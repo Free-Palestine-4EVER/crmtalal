@@ -29,7 +29,7 @@ export function Faq() {
               <Reveal key={i} delay={Math.min(i, 4) * 0.05}>
                 <div
                   className={cn(
-                    "overflow-hidden rounded-2xl border bg-scard shadow-[0_14px_44px_-30px_rgba(114,20,47,0.32)] transition-all duration-300",
+                    "overflow-hidden rounded-2xl border bg-scard shadow-[0_14px_44px_-30px_rgba(127,24,54,0.32)] transition-all duration-300",
                     isOpen
                       ? "border-[var(--s-gold)]/45 shadow-[0_18px_50px_-28px_var(--s-glow)]"
                       : "border-line hover:border-[var(--s-gold)]/30",

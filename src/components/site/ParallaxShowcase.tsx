@@ -34,7 +34,7 @@ type Props = {
 };
 
 const DEFAULT_FALLBACK =
-  "linear-gradient(135deg, #2a0712 0%, #72142f 45%, #14161d 100%)";
+  "linear-gradient(135deg, #2c0813 0%, #7f1836 45%, #14161d 100%)";
 
 /**
  * Full-bleed cinematic chapter divider. The media layer travels hard against
@@ -109,11 +109,11 @@ export function ParallaxShowcase({
       />
       <div className="grain pointer-events-none absolute inset-0" />
 
-      {/* floating 3D ornament — spins with scroll via its own stage */}
+      {/* floating 3D ornament — spins with scroll; visible on ALL screens */}
       {ornament && (
         <div
           aria-hidden
-          className="pointer-events-none absolute end-[4%] top-1/2 z-10 hidden h-72 w-72 -translate-y-1/2 lg:block xl:h-96 xl:w-96"
+          className="pointer-events-none absolute end-[2%] top-[8%] z-10 h-44 w-44 sm:h-60 sm:w-60 lg:end-[4%] lg:top-1/2 lg:h-80 lg:w-80 lg:-translate-y-1/2 xl:h-96 xl:w-96"
         >
           {ornament}
         </div>

@@ -37,11 +37,12 @@ export function SiteNav() {
   const logoTextTone = theme === "dark" ? "light" : "dark";
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-line bg-[var(--s-bg)]/85 shadow-[0_10px_40px_-28px_rgba(114,20,47,0.35)] backdrop-blur-xl"
+          ? "border-b border-line bg-[var(--s-bg)]/85 shadow-[0_10px_40px_-28px_rgba(127,24,54,0.35)] backdrop-blur-xl"
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -85,7 +86,7 @@ export function SiteNav() {
           <Button
             href="/register"
             size="sm"
-            className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(114,20,47,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
+            className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(127,24,54,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
           >
             {dict.nav.requestValuation}
           </Button>
@@ -101,13 +102,18 @@ export function SiteNav() {
         </button>
       </nav>
 
-      <AnimatePresence>
+    </header>
+
+    {/* mobile menu — OUTSIDE the header: backdrop-filter would otherwise
+        become the containing block for this fixed panel and clip it,
+        leaving the page visible behind ("transparent menu"). */}
+    <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[var(--s-bg)] text-fg lg:hidden"
+            className="fixed inset-0 z-[70] min-h-svh overflow-y-auto bg-[var(--s-bg)] text-fg lg:hidden"
           >
             <div className="flex h-18 items-center justify-between border-b border-line px-5">
               <Logo tone={logoTone} textTone={logoTextTone} />
@@ -138,7 +144,7 @@ export function SiteNav() {
                 <Button
                   href="/register"
                   size="lg"
-                  className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(114,20,47,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
+                  className="bg-maroon-600 from-maroon-600 to-maroon-600 text-cream-50 shadow-[0_10px_30px_-14px_rgba(127,24,54,0.6)] hover:bg-maroon-700 hover:from-maroon-700 hover:to-maroon-700"
                 >
                   {dict.nav.requestValuation}
                 </Button>
@@ -158,7 +164,7 @@ export function SiteNav() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </header>
+    </AnimatePresence>
+    </>
   );
 }

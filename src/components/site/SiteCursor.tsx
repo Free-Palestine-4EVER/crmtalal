@@ -55,12 +55,12 @@ export function SiteCursor() {
           opacity: visible ? (active ? 0.9 : 0.55) : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 22 }}
-        className="absolute -left-4 -top-4 block h-8 w-8 rounded-full border border-[#c9a24c]/70"
+        className="absolute -left-4 -top-4 block h-8 w-8 rounded-full border border-[#b48a32]/70"
       />
       <motion.span
         animate={{ scale: active ? 0 : 1, opacity: visible ? 1 : 0 }}
         transition={{ duration: 0.2 }}
-        className="absolute -left-[3px] -top-[3px] block h-1.5 w-1.5 rounded-full bg-[#c9a24c]"
+        className="absolute -left-[3px] -top-[3px] block h-1.5 w-1.5 rounded-full bg-[#b48a32]"
       />
     </motion.div>
   );

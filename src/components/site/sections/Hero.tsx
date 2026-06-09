@@ -97,10 +97,11 @@ export function Hero() {
     <section ref={ref} className="relative lg:h-[175svh]">
       <div className="bg-grain relative isolate overflow-hidden bg-ink-950 lg:sticky lg:top-0 lg:h-svh">
       {/* ── ONE full-bleed cinematic backdrop ── */}
+      {/* clean skyline (the calligraphy artwork stays exclusive to chapter 01) */}
       <motion.div
         aria-hidden
-        style={{ y: skyY, backgroundImage: "url('/images/parallax-1.jpg')" }}
-        className="absolute inset-[-8%] bg-cover bg-center opacity-45 will-change-transform"
+        style={{ y: skyY, backgroundImage: "url('/images/services/commercial.jpg')" }}
+        className="absolute inset-[-8%] bg-cover bg-center opacity-40 will-change-transform"
       />
       <div
         aria-hidden
@@ -118,7 +119,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 top-0 h-[60%]"
         style={{
           background:
-            "radial-gradient(55% 60% at 32% 42%, rgba(201,162,76,0.26), transparent 70%)",
+            "radial-gradient(55% 60% at 32% 42%, rgba(180,138,50,0.26), transparent 70%)",
         }}
       />
       <GoldDust />
@@ -209,7 +210,7 @@ export function Hero() {
                 <Magnetic>
                   <a
                     href="#request"
-                    className="group inline-flex h-13 items-center gap-3 rounded-full bg-gradient-to-b from-gold-500 to-gold-600 px-7 font-semibold text-ink-950 shadow-[0_18px_50px_-16px_rgba(201,162,76,0.55)] transition-shadow hover:shadow-[0_22px_60px_-14px_rgba(201,162,76,0.75)]"
+                    className="group inline-flex h-13 items-center gap-3 rounded-full bg-gradient-to-b from-gold-500 to-gold-600 px-7 font-semibold text-ink-950 shadow-[0_18px_50px_-16px_rgba(180,138,50,0.55)] transition-shadow hover:shadow-[0_22px_60px_-14px_rgba(180,138,50,0.75)]"
                   >
                     {dict.hero.ctaPrimary}
                     <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />

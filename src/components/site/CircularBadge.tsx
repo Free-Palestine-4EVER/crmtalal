@@ -37,7 +37,7 @@ export function CircularBadge({
           <textPath href="#badge-circle">{text}</textPath>
         </text>
       </svg>
-      <span className="grid h-14 w-14 place-items-center rounded-full border border-[var(--s-gold)]/40 bg-scard/80 text-sgold shadow-[0_10px_30px_-12px_var(--s-glow)] backdrop-blur">
+      <span className="grid h-14 w-14 place-items-center rounded-full border border-[var(--s-gold)]/40 bg-scard text-sgold shadow-[0_10px_30px_-12px_var(--s-glow)]">
         <BadgeCheck className="h-6 w-6" strokeWidth={1.7} />
       </span>
     </div>
